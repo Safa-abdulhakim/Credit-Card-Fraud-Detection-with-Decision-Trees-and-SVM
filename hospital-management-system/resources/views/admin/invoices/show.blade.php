@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('title', 'تفاصيل الفاتورة')
-@section('page-title', 'فاتورة ' . $invoice->invoice_number)
+@section('page-title', 'الفاتورة {{ $invoice->invoice_number }}')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">لوحة التحكم</a></li>
     <li class="breadcrumb-item"><a href="{{ route('admin.invoices.index') }}">الفواتير</a></li>
@@ -8,181 +8,28 @@
 @endsection
 @section('page-actions')
     <div class="d-flex gap-2">
-        <a href="{{ route('admin.invoices.print', $invoice) }}" class="btn btn-outline-secondary" target="_blank"><i class="fas fa-print me-2"></i>طباعة</a>
-        <a href="{{ route('admin.invoices.edit', $invoice) }}" class="btn btn-primary"><i class="fas fa-edit me-2"></i>تعديل</a>
+        <a href="{{ route('admin.invoices.print', $invoice) }}" class="btn btn-secondary btn-sm" target="_blank"><i class="fas fa-print me-1"></i>طباعة</a>
+        <a href="{{ route('admin.invoices.edit', $invoice) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit me-1"></i>تعديل</a>
+        @if($invoice->status != 'paid')
+        <a href="{{ route('admin.payments.create', ['invoice_id' => $invoice->id]) }}" class="btn btn-success btn-sm"><i class="fas fa-dollar-sign me-1"></i>تسجيل دفعة</a>
+        @endif
     </div>
 @endsection
 @section('content')
 <div class="row g-3">
     <div class="col-12 col-lg-8">
-        <!-- Invoice Card -->
-        <div class="card mb-3">
-            <div class="card-header d-flex align-items-center justify-content-between">
-                <h6 class="mb-0 fw-semibold">رقم الفاتورة #{{ $invoice->invoice_number }}</h6>
-                @php
-                    $statusMap = ['paid'=>'success','partial'=>'warning','unpaid'=>'danger'];
-                    $badge = $statusMap[$invoice->status] ?? 'secondary';
-                @endphp
-                <span class="badge bg-{{ $badge }} fs-6">{{ ucfirst($invoice->status) }}</span>
-            </div>
-            <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p class="text-muted small mb-1">المريض</p>
-                        <p class="fw-semibold mb-0">{{ $invoice->patient->name ?? 'N/A' }}</p>
-                        <p class="text-muted small mb-0">{{ $invoice->patient->phone ?? '' }}</p>
-                        @if($invoice->patient->address ?? false)
-                            <p class="text-muted small mb-0">{{ $invoice->patient->address }}</p>
-                        @endif
-                    </div>
-                    <div class="col-md-6 text-md-end">
-                        <p class="text-muted small mb-1">تاريخ الفاتورة</p>
-                        <p class="fw-semibold mb-1">{{ $invoice->created_at->format('M d, Y') }}</p>
-                        @if($invoice->due_date)
-                        <p class="text-muted small mb-1">تاريخ الاستحقاق</p>
-                        <p class="fw-semibold mb-0">{{ $invoice->due_date->format('M d, Y') }}</p>
-                        @endif
-                    </div>
-                </div>
-
-                <table class="table table-bordered">
-                    <thead class="table-light">
-                        <tr><th>الوصف</th><th class="text-end">المبلغ</th></tr>
-                    </thead>
-                    <tbody>
-                        @if($invoice->consultation_fee > 0)
-                        <tr><td>رسوم الاستشارة</td><td class="text-end">${{ number_format($invoice->consultation_fee, 2) }}</td></tr>
-                        @endif
-                        @if($invoice->medicine_fee > 0)
-                        <tr><td>الأدوية / الصيدلية</td><td class="text-end">${{ number_format($invoice->medicine_fee, 2) }}</td></tr>
-                        @endif
-                        @if($invoice->test_fee > 0)
-                        <tr><td>المختبر / الفحوصات</td><td class="text-end">${{ number_format($invoice->test_fee, 2) }}</td></tr>
-                        @endif
-                        @if($invoice->other_fee > 0)
-                        <tr><td>رسوم أخرى</td><td class="text-end">${{ number_format($invoice->other_fee, 2) }}</td></tr>
-                        @endif
-                        @if($invoice->discount > 0)
-                        <tr class="text-danger"><td>الخصم</td><td class="text-end">-${{ number_format($invoice->discount, 2) }}</td></tr>
-                        @endif
-                    </tbody>
-                    <tfoot>
-                        <tr class="fw-bold table-light">
-                            <td>إجمالي المبلغ</td>
-                            <td class="text-end fs-5">${{ number_format($invoice->total_amount, 2) }}</td>
-                        </tr>
-                        <tr class="text-success">
-                            <td>المبلغ المدفوع</td>
-                            <td class="text-end">${{ number_format($invoice->paid_amount, 2) }}</td>
-                        </tr>
-                        @if($invoice->remaining_amount > 0)
-                        <tr class="text-danger fw-bold">
-                            <td>الرصيد المستحق</td>
-                            <td class="text-end">${{ number_format($invoice->remaining_amount, 2) }}</td>
-                        </tr>
-                        @endif
-                    </tfoot>
-                </table>
-
-                @if($invoice->notes)
-                <div class="mt-3 p-3 bg-light rounded">
-                    <h6 class="text-muted small mb-1">الملاحظات</h6>
-                    <p class="mb-0 small">{{ $invoice->notes }}</p>
-                </div>
-                @endif
-            </div>
-        </div>
-
-        <!-- Payment History -->
-        <div class="card">
-            <div class="card-header d-flex align-items-center justify-content-between">
-                <h6 class="mb-0 fw-semibold"><i class="fas fa-money-bill-wave me-2 text-success"></i>سجل المدفوعات</h6>
-                @if($invoice->status != 'paid')
-                    <a href="{{ route('admin.payments.create') }}?invoice={{ $invoice->id }}" class="btn btn-sm btn-success">
-                        <i class="fas fa-plus me-1"></i>تسجيل دفعة
-                    </a>
-                @endif
-            </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table mb-0">
-                        <thead class="table-light">
-                            <tr><th>التاريخ</th><th>المبلغ</th><th>الطريقة</th><th>رقم المعاملة</th><th>الإجراءات</th></tr>
-                        </thead>
-                        <tbody>
-                            @forelse($invoice->payments as $payment)
-                            <tr>
-                                <td>{{ $payment->payment_date->format('M d, Y') }}</td>
-                                <td class="text-success fw-semibold">${{ number_format($payment->amount, 2) }}</td>
-                                <td><span class="badge bg-light text-dark">{{ ucfirst(str_replace('_', ' ', $payment->payment_method)) }}</span></td>
-                                <td><small class="text-muted">{{ $payment->transaction_id ?? '-' }}</small></td>
-                                <td>
-                                    <div class="btn-group btn-group-sm">
-                                        <a href="{{ route('admin.payments.edit', $payment) }}" class="btn btn-outline-primary"><i class="fas fa-edit"></i></a>
-                                        <form action="{{ route('admin.payments.destroy', $payment) }}" method="POST" class="d-inline" onsubmit="return confirm('هل تريد حذف هذه الدفعة؟')">
-                                            @csrf @method('DELETE')
-                                            <button class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr><td colspan="5" class="text-center text-muted py-3">لا توجد مدفوعات مسجلة بعد</td></tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+        <div class="card mb-3"><div class="card-header d-flex align-items-center justify-content-between"><h6 class="mb-0 fw-semibold"><i class="fas fa-file-invoice-dollar me-2 text-success"></i>بنود الفاتورة</h6><span class="badge bg-{{ ['unpaid'=>'warning','paid'=>'success','partial'=>'info','cancelled'=>'danger'][$invoice->status] ?? 'secondary' }} fs-6">{{ ucfirst($invoice->status) }}</span></div><div class="card-body p-0"><div class="table-responsive"><table class="table mb-0"><thead class="table-light"><tr><th>الوصف</th><th class="text-center">الكمية</th><th class="text-end">سعر الوحدة</th><th class="text-end">الإجمالي</th></tr></thead><tbody>@foreach($invoice->items as $item)<tr><td>{{ $item->description }}</td><td class="text-center">{{ $item->quantity }}</td><td class="text-end">${{ number_format($item->unit_price, 2) }}</td><td class="text-end">${{ number_format($item->total, 2) }}</td></tr>@endforeach</tbody><tfoot class="table-light"><tr><td colspan="3" class="text-end fw-semibold">المجموع الفرعي:</td><td class="text-end">${{ number_format($invoice->subtotal, 2) }}</td></tr>@if($invoice->discount_amount > 0)<tr><td colspan="3" class="text-end">الخصم:</td><td class="text-end text-danger">-${{ number_format($invoice->discount_amount, 2) }}</td></tr>@endif@if($invoice->tax_rate > 0)<tr><td colspan="3" class="text-end">ضريبة {{ $invoice->tax_rate }}%:</td><td class="text-end">${{ number_format($invoice->tax_amount, 2) }}</td></tr>@endif<tr><td colspan="3" class="text-end fw-bold fs-5">الإجمالي:</td><td class="text-end fw-bold fs-5 text-success">${{ number_format($invoice->total_amount, 2) }}</td></tr></tfoot></table></div></div></div>
+        @if($invoice->notes)<div class="card mb-3"><div class="card-header"><h6 class="mb-0">ملاحظات</h6></div><div class="card-body"><p class="text-muted mb-0">{{ $invoice->notes }}</p></div></div>@endif
+        @if($invoice->payments->count())
+        <div class="card"><div class="card-header d-flex justify-content-between align-items-center"><h6 class="mb-0 fw-semibold">سجل الدفعات</h6></div><div class="card-body p-0"><div class="table-responsive"><table class="table mb-0"><thead class="table-light"><tr><th>التاريخ</th><th>المبلغ</th><th>طريقة الدفع</th><th>ملاحظات</th></tr></thead><tbody>@foreach($invoice->payments as $payment)<tr><td>{{ $payment->payment_date->format('M d, Y') }}</td><td class="fw-semibold text-success">${{ number_format($payment->amount, 2) }}</td><td>{{ ucfirst(str_replace('_', ' ', $payment->payment_method)) }}</td><td><small class="text-muted">{{ $payment->notes ?? '-' }}</small></td></tr>@endforeach</tbody><tfoot class="table-light"><tr><td colspan="1" class="fw-semibold">إجمالي المدفوع:</td><td colspan="3" class="fw-bold text-success">${{ number_format($invoice->payments->sum('amount'), 2) }}</td></tr></tfoot></table></div></div></div>
+        @endif
     </div>
-
-    <!-- Summary Sidebar -->
     <div class="col-12 col-lg-4">
-        <div class="card sticky-top" style="top:80px;">
-            <div class="card-body">
-                <h6 class="fw-semibold mb-3">ملخص</h6>
-                <div class="mb-2 d-flex justify-content-between">
-                    <span class="text-muted">رقم الفاتورة</span><strong>{{ $invoice->invoice_number }}</strong>
-                </div>
-                <div class="mb-2 d-flex justify-content-between">
-                    <span class="text-muted">إجمالي المبلغ</span><strong>${{ number_format($invoice->total_amount, 2) }}</strong>
-                </div>
-                <div class="mb-2 d-flex justify-content-between text-success">
-                    <span>المبلغ المدفوع</span><strong>${{ number_format($invoice->paid_amount, 2) }}</strong>
-                </div>
-                @if($invoice->remaining_amount > 0)
-                <div class="mb-2 d-flex justify-content-between text-danger">
-                    <span>الرصيد المستحق</span><strong>${{ number_format($invoice->remaining_amount, 2) }}</strong>
-                </div>
-                @endif
-                @if($invoice->due_date)
-                <div class="mb-2 d-flex justify-content-between">
-                    <span class="text-muted">تاريخ الاستحقاق</span>
-                    <strong class="{{ $invoice->due_date->isPast() && $invoice->status != 'paid' ? 'text-danger' : '' }}">
-                        {{ $invoice->due_date->format('M d, Y') }}
-                    </strong>
-                </div>
-                @endif
-                @if($invoice->appointment)
-                <div class="mb-2 d-flex justify-content-between">
-                    <span class="text-muted">الموعد</span>
-                    <a href="{{ route('admin.appointments.show', $invoice->appointment) }}" class="small">عرض</a>
-                </div>
-                @endif
-                <hr>
-                <div class="d-grid gap-2">
-                    @if($invoice->status != 'paid')
-                    <a href="{{ route('admin.payments.create') }}?invoice={{ $invoice->id }}" class="btn btn-success">
-                        <i class="fas fa-money-bill-wave me-2"></i>تسجيل دفعة
-                    </a>
-                    @endif
-                    <a href="{{ route('admin.invoices.print', $invoice) }}" class="btn btn-outline-secondary" target="_blank">
-                        <i class="fas fa-print me-2"></i>طباعة الفاتورة
-                    </a>
-                    <a href="{{ route('admin.invoices.index') }}" class="btn btn-secondary">رجوع إلى الفواتير</a>
-                </div>
-            </div>
-        </div>
+        <div class="card mb-3"><div class="card-header"><h6 class="mb-0">تفاصيل الفاتورة</h6></div><div class="card-body"><div class="mb-2 d-flex justify-content-between"><span class="text-muted small">رقم الفاتورة:</span><strong>{{ $invoice->invoice_number }}</strong></div><div class="mb-2 d-flex justify-content-between"><span class="text-muted small">تاريخ الإصدار:</span><span>{{ $invoice->invoice_date->format('M d, Y') }}</span></div>@if($invoice->due_date)<div class="mb-2 d-flex justify-content-between"><span class="text-muted small">تاريخ الاستحقاق:</span><span class="{{ $invoice->due_date->isPast() && $invoice->status != 'paid' ? 'text-danger fw-bold' : '' }}">{{ $invoice->due_date->format('M d, Y') }}</span></div>@endif@if($invoice->payment_method)<div class="mb-2 d-flex justify-content-between"><span class="text-muted small">طريقة الدفع:</span><span>{{ ucfirst(str_replace('_',' ',$invoice->payment_method)) }}</span></div>@endif</div></div>
+        <div class="card mb-3"><div class="card-header"><h6 class="mb-0"><i class="fas fa-user me-2 text-primary"></i>المريض</h6></div><div class="card-body"><div class="d-flex align-items-center mb-2"><div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-2" style="width:42px;height:42px;font-size:0.9rem;font-weight:700;flex-shrink:0;">{{ strtoupper(substr($invoice->patient->name ?? 'P', 0, 2)) }}</div><div><div class="fw-bold">{{ $invoice->patient->name ?? 'N/A' }}</div>@if($invoice->patient)<small class="text-muted">{{ $invoice->patient->phone }}</small>@endif</div></div>@if($invoice->patient)<a href="{{ route('admin.patients.show', $invoice->patient) }}" class="btn btn-sm btn-outline-primary w-100">عرض الملف</a>@endif</div></div>
+        @if($invoice->doctor)
+        <div class="card"><div class="card-header"><h6 class="mb-0"><i class="fas fa-user-md me-2 text-info"></i>الطبيب</h6></div><div class="card-body"><div class="d-flex align-items-center mb-2"><div class="bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center me-2" style="width:42px;height:42px;font-size:0.9rem;font-weight:700;flex-shrink:0;">{{ strtoupper(substr($invoice->doctor->user->name ?? 'DR', 0, 2)) }}</div><div><div class="fw-bold">{{ $invoice->doctor->user->name ?? 'N/A' }}</div><small class="text-primary">{{ $invoice->doctor->specialization }}</small></div></div><a href="{{ route('admin.doctors.show', $invoice->doctor) }}" class="btn btn-sm btn-outline-info w-100">عرض الملف</a></div></div>
+        @endif
     </div>
 </div>
 @endsection
