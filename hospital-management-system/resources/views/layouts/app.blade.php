@@ -1,28 +1,29 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'MediCare HMS') }}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #f5f7fb; font-family: 'Segoe UI', sans-serif; }
+        body { background: #f5f7fb; font-family: 'Cairo', sans-serif; text-align: right; }
         .card { border: none; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-radius: 0.75rem; }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
         <a class="navbar-brand fw-bold" href="{{ route('dashboard') }}">
-            <i class="fas fa-hospital-alt me-2"></i>MediCare HMS
+            <i class="fas fa-hospital-alt ms-2"></i>MediCare HMS
         </a>
-        <div class="ms-auto d-flex align-items-center gap-3">
+        <div class="me-auto d-flex align-items-center gap-3">
             <span class="text-white-50 small">{{ auth()->user()->name }}</span>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="btn btn-sm btn-outline-light">
-                    <i class="fas fa-sign-out-alt me-1"></i>Logout
+                    <i class="fas fa-sign-out-alt ms-1"></i>تسجيل الخروج
                 </button>
             </form>
         </div>

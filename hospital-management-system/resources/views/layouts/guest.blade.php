@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'MediCare HMS') }}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             background: linear-gradient(135deg, #12263f 0%, #1a3a5c 50%, #0f4c75 100%);
             min-height: 100vh;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Cairo', sans-serif;
+            text-align: right;
         }
         .auth-card {
             border: none;
@@ -39,7 +41,7 @@
                     <i class="fas fa-hospital-alt"></i>
                 </div>
                 <h3 class="text-white fw-bold mb-0">MediCare HMS</h3>
-                <p class="text-white-50 small">Hospital Management System</p>
+                <p class="text-white-50 small">نظام إدارة المستشفى</p>
             </div>
             <div class="card auth-card">
                 <div class="card-body p-4 p-md-5">
@@ -47,7 +49,7 @@
                 </div>
             </div>
             <p class="text-center text-white-50 small mt-3">
-                &copy; {{ date('Y') }} MediCare Hospital. All rights reserved.
+                &copy; {{ date('Y') }} MediCare Hospital. جميع الحقوق محفوظة.
             </p>
         </div>
     </div>

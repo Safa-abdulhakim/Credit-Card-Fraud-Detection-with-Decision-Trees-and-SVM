@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
-@section('title', 'Dashboard - HMS')
-@section('page-title', 'Dashboard')
+@section('title', 'لوحة التحكم - HMS')
+@section('page-title', 'لوحة التحكم')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item active">Dashboard</li>
+    <li class="breadcrumb-item active">لوحة التحكم</li>
 @endsection
 
 @section('content')
@@ -15,9 +15,9 @@
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <p class="text-muted small mb-1">Total Patients</p>
+                        <p class="text-muted small mb-1">إجمالي المرضى</p>
                         <h3 class="fw-bold mb-0">{{ number_format($stats['total_patients']) }}</h3>
-                        <small class="text-success"><i class="fas fa-arrow-up me-1"></i>Active Records</small>
+                        <small class="text-success"><i class="fas fa-arrow-up me-1"></i>سجلات نشطة</small>
                     </div>
                     <div class="stat-icon bg-primary bg-opacity-10 text-primary">
                         <i class="fas fa-procedures"></i>
@@ -31,9 +31,9 @@
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <p class="text-muted small mb-1">Total Doctors</p>
+                        <p class="text-muted small mb-1">إجمالي الأطباء</p>
                         <h3 class="fw-bold mb-0">{{ number_format($stats['total_doctors']) }}</h3>
-                        <small class="text-info"><i class="fas fa-stethoscope me-1"></i>Medical Staff</small>
+                        <small class="text-info"><i class="fas fa-stethoscope me-1"></i>الكادر الطبي</small>
                     </div>
                     <div class="stat-icon bg-info bg-opacity-10 text-info">
                         <i class="fas fa-user-md"></i>
@@ -47,9 +47,9 @@
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <p class="text-muted small mb-1">Today's Appointments</p>
+                        <p class="text-muted small mb-1">مواعيد اليوم</p>
                         <h3 class="fw-bold mb-0">{{ number_format($stats['today_appointments']) }}</h3>
-                        <small class="text-warning"><i class="fas fa-clock me-1"></i>{{ $stats['pending_appointments'] }} Pending</small>
+                        <small class="text-warning"><i class="fas fa-clock me-1"></i>{{ $stats['pending_appointments'] }} معلق</small>
                     </div>
                     <div class="stat-icon bg-warning bg-opacity-10 text-warning">
                         <i class="fas fa-calendar-check"></i>
@@ -63,9 +63,9 @@
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <p class="text-muted small mb-1">Monthly Revenue</p>
+                        <p class="text-muted small mb-1">الإيرادات الشهرية</p>
                         <h3 class="fw-bold mb-0">${{ number_format($stats['monthly_revenue'], 2) }}</h3>
-                        <small class="text-success"><i class="fas fa-dollar-sign me-1"></i>Total: ${{ number_format($stats['total_revenue'], 2) }}</small>
+                        <small class="text-success"><i class="fas fa-dollar-sign me-1"></i>الإجمالي: ${{ number_format($stats['total_revenue'], 2) }}</small>
                     </div>
                     <div class="stat-icon bg-success bg-opacity-10 text-success">
                         <i class="fas fa-money-bill-wave"></i>
@@ -81,8 +81,8 @@
     <div class="col-12 col-lg-8">
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
-                <h6 class="mb-0 fw-semibold">Appointments Overview (Last 6 Months)</h6>
-                <span class="badge bg-primary">Monthly</span>
+                <h6 class="mb-0 fw-semibold">نظرة عامة على المواعيد (آخر 6 أشهر)</h6>
+                <span class="badge bg-primary">شهري</span>
             </div>
             <div class="card-body">
                 <canvas id="appointmentsChart" height="100"></canvas>
@@ -92,7 +92,7 @@
     <div class="col-12 col-lg-4">
         <div class="card h-100">
             <div class="card-header">
-                <h6 class="mb-0 fw-semibold">Appointment Status</h6>
+                <h6 class="mb-0 fw-semibold">حالة المواعيد</h6>
             </div>
             <div class="card-body d-flex flex-column align-items-center justify-content-center">
                 <canvas id="statusChart" height="200"></canvas>
@@ -114,8 +114,8 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
-                <h6 class="mb-0 fw-semibold">Revenue Overview (Last 6 Months)</h6>
-                <a href="{{ route('admin.reports.revenue') }}" class="btn btn-sm btn-outline-primary">View Report</a>
+                <h6 class="mb-0 fw-semibold">نظرة عامة على الإيرادات (آخر 6 أشهر)</h6>
+                <a href="{{ route('admin.reports.revenue') }}" class="btn btn-sm btn-outline-primary">عرض التقرير</a>
             </div>
             <div class="card-body">
                 <canvas id="revenueChart" height="70"></canvas>
@@ -129,18 +129,18 @@
     <div class="col-12 col-lg-8">
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
-                <h6 class="mb-0 fw-semibold">Recent Appointments</h6>
-                <a href="{{ route('admin.appointments.index') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                <h6 class="mb-0 fw-semibold">المواعيد الأخيرة</h6>
+                <a href="{{ route('admin.appointments.index') }}" class="btn btn-sm btn-outline-primary">عرض الكل</a>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th>Patient</th>
-                                <th>Doctor</th>
-                                <th>Date</th>
-                                <th>Status</th>
+                                <th>مريض</th>
+                                <th>طبيب</th>
+                                <th>التاريخ</th>
+                                <th>الحالة</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -165,7 +165,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="4" class="text-center text-muted py-4">No appointments yet</td>
+                                <td colspan="4" class="text-center text-muted py-4">لا توجد مواعيد حديثة</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -177,8 +177,8 @@
     <div class="col-12 col-lg-4">
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
-                <h6 class="mb-0 fw-semibold">Recent Patients</h6>
-                <a href="{{ route('admin.patients.index') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                <h6 class="mb-0 fw-semibold">المرضى الأخيرون</h6>
+                <a href="{{ route('admin.patients.index') }}" class="btn btn-sm btn-outline-primary">عرض الكل</a>
             </div>
             <div class="card-body">
                 @forelse($recentPatients as $patient)
@@ -189,7 +189,7 @@
                     <div class="flex-grow-1">
                         <div class="fw-semibold small">{{ $patient->name }}</div>
                         <div class="text-muted" style="font-size:0.78rem;">
-                            {{ ucfirst($patient->gender) }} · Age {{ $patient->age }}
+                            {{ ucfirst($patient->gender) }} · العمر {{ $patient->age }}
                             @if($patient->blood_group)
                                 · {{ $patient->blood_group }}
                             @endif
@@ -200,7 +200,7 @@
                     </a>
                 </div>
                 @empty
-                    <p class="text-muted text-center">No patients yet</p>
+                    <p class="text-muted text-center">لا يوجد مرضى حديثون</p>
                 @endforelse
             </div>
         </div>
@@ -221,7 +221,7 @@ new Chart(document.getElementById('appointmentsChart'), {
     data: {
         labels: labels,
         datasets: [{
-            label: 'Appointments',
+            label: 'المواعيد',
             data: appointmentsData,
             backgroundColor: 'rgba(44, 123, 229, 0.7)',
             borderColor: '#2c7be5',
@@ -260,7 +260,7 @@ new Chart(document.getElementById('revenueChart'), {
     data: {
         labels: labels,
         datasets: [{
-            label: 'Revenue ($)',
+            label: 'الإيرادات ($)',
             data: revenueData,
             borderColor: '#1cc88a',
             backgroundColor: 'rgba(28, 200, 138, 0.1)',
