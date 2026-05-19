@@ -1,13 +1,13 @@
 @extends('layouts.admin')
-@section('title', 'Medical Records')
-@section('page-title', 'Medical Records')
+@section('title', 'السجلات الطبية')
+@section('page-title', 'السجلات الطبية')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Medical Records</li>
+    <li class="breadcrumb-item active">السجلات الطبية</li>
 @endsection
 @section('page-actions')
     <a href="{{ route('admin.medical-records.create') }}" class="btn btn-primary">
-        <i class="fas fa-plus me-2"></i>Add Record
+        <i class="fas fa-plus me-2"></i>إضافة سجل طبي
     </a>
 @endsection
 @section('content')
@@ -16,22 +16,22 @@
     <div class="card-body py-2">
         <form method="GET" class="row g-2 align-items-end">
             <div class="col-md-4">
-                <input type="text" name="search" class="form-control form-control-sm" placeholder="Search patient or diagnosis..." value="{{ request('search') }}">
+                <input type="text" name="search" class="form-control form-control-sm" placeholder="البحث عن مريض أو تشخيص..." value="{{ request('search') }}">
             </div>
             <div class="col-md-3">
                 <select name="doctor_id" class="form-select form-select-sm">
-                    <option value="">All Doctors</option>
+                    <option value="">جميع الأطباء</option>
                     @foreach($doctors as $doc)
                         <option value="{{ $doc->id }}" {{ request('doctor_id') == $doc->id ? 'selected' : '' }}>{{ $doc->user->name ?? 'N/A' }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="col-md-2">
-                <input type="date" name="date_from" class="form-control form-control-sm" value="{{ request('date_from') }}" placeholder="From date">
+                <input type="date" name="date_from" class="form-control form-control-sm" value="{{ request('date_from') }}" placeholder="من تاريخ">
             </div>
             <div class="col-md-3">
-                <button type="submit" class="btn btn-primary btn-sm me-1"><i class="fas fa-search"></i> Filter</button>
-                <a href="{{ route('admin.medical-records.index') }}" class="btn btn-secondary btn-sm">Reset</a>
+                <button type="submit" class="btn btn-primary btn-sm me-1"><i class="fas fa-search"></i> تصفية</button>
+                <a href="{{ route('admin.medical-records.index') }}" class="btn btn-secondary btn-sm">إعادة تعيين</a>
             </div>
         </form>
     </div>
@@ -44,12 +44,12 @@
                 <thead class="table-light">
                     <tr>
                         <th>#</th>
-                        <th>Patient</th>
-                        <th>Doctor</th>
-                        <th>Diagnosis</th>
-                        <th>Visit Date</th>
-                        <th>Follow-up</th>
-                        <th>Actions</th>
+                        <th>المريض</th>
+                        <th>الطبيب</th>
+                        <th>التشخيص</th>
+                        <th>تاريخ الزيارة</th>
+                        <th>المتابعة</th>
+                        <th>الإجراءات</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,11 +75,11 @@
                         </td>
                         <td>
                             <div class="btn-group btn-group-sm">
-                                <a href="{{ route('admin.medical-records.show', $record) }}" class="btn btn-outline-info" title="View"><i class="fas fa-eye"></i></a>
-                                <a href="{{ route('admin.medical-records.edit', $record) }}" class="btn btn-outline-primary" title="Edit"><i class="fas fa-edit"></i></a>
-                                <form action="{{ route('admin.medical-records.destroy', $record) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this record?')">
+                                <a href="{{ route('admin.medical-records.show', $record) }}" class="btn btn-outline-info" title="عرض"><i class="fas fa-eye"></i></a>
+                                <a href="{{ route('admin.medical-records.edit', $record) }}" class="btn btn-outline-primary" title="تعديل"><i class="fas fa-edit"></i></a>
+                                <form action="{{ route('admin.medical-records.destroy', $record) }}" method="POST" class="d-inline" onsubmit="return confirm('هل تريد حذف هذا السجل الطبي؟')">
                                     @csrf @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-danger" title="Delete"><i class="fas fa-trash"></i></button>
+                                    <button type="submit" class="btn btn-outline-danger" title="حذف"><i class="fas fa-trash"></i></button>
                                 </form>
                             </div>
                         </td>
@@ -88,7 +88,7 @@
                     <tr>
                         <td colspan="7" class="text-center text-muted py-5">
                             <i class="fas fa-file-medical fa-2x mb-2 d-block opacity-25"></i>
-                            No medical records found.
+                            لا توجد سجلات طبية.
                         </td>
                     </tr>
                     @endforelse

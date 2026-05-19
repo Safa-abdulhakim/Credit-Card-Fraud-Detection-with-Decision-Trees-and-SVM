@@ -1,18 +1,18 @@
 @extends('layouts.admin')
-@section('title', 'Patient Profile')
+@section('title', 'ملف المريض')
 @section('page-title', $patient->name)
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('admin.patients.index') }}">Patients</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">لوحة التحكم</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.patients.index') }}">المرضى</a></li>
     <li class="breadcrumb-item active">{{ $patient->name }}</li>
 @endsection
 @section('page-actions')
     <div class="d-flex gap-2">
         <a href="{{ route('admin.appointments.create', ['patient_id' => $patient->id]) }}" class="btn btn-success btn-sm">
-            <i class="fas fa-calendar-plus me-1"></i>Book Appointment
+            <i class="fas fa-calendar-plus me-1"></i>حجز موعد
         </a>
         <a href="{{ route('admin.patients.edit', $patient) }}" class="btn btn-primary btn-sm">
-            <i class="fas fa-edit me-1"></i>Edit
+            <i class="fas fa-edit me-1"></i>تعديل
         </a>
     </div>
 @endsection
@@ -27,7 +27,7 @@
                 </div>
                 <h5 class="fw-bold mb-1">{{ $patient->name }}</h5>
                 <p class="text-muted mb-3 small">
-                    Patient ID: #{{ str_pad($patient->id, 5, '0', STR_PAD_LEFT) }}
+                    رقم المريض: #{{ str_pad($patient->id, 5, '0', STR_PAD_LEFT) }}
                 </p>
                 @if($patient->blood_group)
                     <span class="badge bg-danger me-1">{{ $patient->blood_group }}</span>
@@ -41,7 +41,7 @@
                         <span class="small">
                             {{ $patient->date_of_birth ? $patient->date_of_birth->format('M d, Y') : 'N/A' }}
                             @if($patient->age)
-                                <span class="text-muted">({{ $patient->age }} years)</span>
+                                <span class="text-muted">({{ $patient->age }} سنة)</span>
                             @endif
                         </span>
                     </li>
@@ -65,14 +65,14 @@
                     <li class="d-flex align-items-start mb-2">
                         <i class="fas fa-phone-alt text-danger me-2 mt-1" style="width:18px;"></i>
                         <div>
-                            <div class="small fw-semibold text-danger">Emergency Contact</div>
+                            <div class="small fw-semibold text-danger">جهة الاتصال في الطوارئ</div>
                             <div class="small">{{ $patient->emergency_contact }}</div>
                         </div>
                     </li>
                     @endif
                     <li class="d-flex align-items-center mb-2">
                         <i class="fas fa-calendar text-muted me-2" style="width:18px;"></i>
-                        <span class="small text-muted">Registered: {{ $patient->created_at->format('M d, Y') }}</span>
+                        <span class="small text-muted">تاريخ التسجيل: {{ $patient->created_at->format('M d, Y') }}</span>
                     </li>
                 </ul>
             </div>
@@ -81,18 +81,18 @@
         @if($patient->allergies || $patient->medical_history)
         <div class="card mt-3">
             <div class="card-header">
-                <h6 class="mb-0 fw-semibold"><i class="fas fa-notes-medical me-2 text-warning"></i>Medical Notes</h6>
+                <h6 class="mb-0 fw-semibold"><i class="fas fa-notes-medical me-2 text-warning"></i>ملاحظات طبية</h6>
             </div>
             <div class="card-body">
                 @if($patient->allergies)
                 <div class="mb-3">
-                    <div class="fw-semibold small text-danger mb-1"><i class="fas fa-exclamation-triangle me-1"></i>Allergies</div>
+                    <div class="fw-semibold small text-danger mb-1"><i class="fas fa-exclamation-triangle me-1"></i>الحساسية</div>
                     <p class="small mb-0">{{ $patient->allergies }}</p>
                 </div>
                 @endif
                 @if($patient->medical_history)
                 <div>
-                    <div class="fw-semibold small text-info mb-1"><i class="fas fa-history me-1"></i>Medical History</div>
+                    <div class="fw-semibold small text-info mb-1"><i class="fas fa-history me-1"></i>التاريخ المرضي</div>
                     <p class="small mb-0">{{ $patient->medical_history }}</p>
                 </div>
                 @endif
@@ -106,15 +106,15 @@
                 <div class="row text-center g-2">
                     <div class="col-4">
                         <div class="fw-bold fs-5 text-primary">{{ $patient->appointments->count() }}</div>
-                        <small class="text-muted">Visits</small>
+                        <small class="text-muted">الزيارات</small>
                     </div>
                     <div class="col-4">
                         <div class="fw-bold fs-5 text-info">{{ $patient->medicalRecords->count() }}</div>
-                        <small class="text-muted">Records</small>
+                        <small class="text-muted">السجلات</small>
                     </div>
                     <div class="col-4">
                         <div class="fw-bold fs-5 text-success">{{ $patient->invoices->count() }}</div>
-                        <small class="text-muted">Invoices</small>
+                        <small class="text-muted">الفواتير</small>
                     </div>
                 </div>
             </div>
@@ -126,25 +126,25 @@
         <ul class="nav nav-tabs mb-3" id="patientTabs" role="tablist">
             <li class="nav-item">
                 <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#appointments-tab" type="button">
-                    <i class="fas fa-calendar-check me-1"></i>Appointments
+                    <i class="fas fa-calendar-check me-1"></i>المواعيد
                     <span class="badge bg-primary ms-1">{{ $patient->appointments->count() }}</span>
                 </button>
             </li>
             <li class="nav-item">
                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#records-tab" type="button">
-                    <i class="fas fa-file-medical me-1"></i>Medical Records
+                    <i class="fas fa-file-medical me-1"></i>السجلات الطبية
                     <span class="badge bg-info ms-1">{{ $patient->medicalRecords->count() }}</span>
                 </button>
             </li>
             <li class="nav-item">
                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#prescriptions-tab" type="button">
-                    <i class="fas fa-prescription-bottle-alt me-1"></i>Prescriptions
+                    <i class="fas fa-prescription-bottle-alt me-1"></i>الوصفات الطبية
                     <span class="badge bg-warning ms-1">{{ $patient->prescriptions->count() }}</span>
                 </button>
             </li>
             <li class="nav-item">
                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#invoices-tab" type="button">
-                    <i class="fas fa-file-invoice-dollar me-1"></i>Invoices
+                    <i class="fas fa-file-invoice-dollar me-1"></i>الفواتير
                     <span class="badge bg-success ms-1">{{ $patient->invoices->count() }}</span>
                 </button>
             </li>
@@ -155,9 +155,9 @@
             <div class="tab-pane fade show active" id="appointments-tab">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h6 class="mb-0 fw-semibold">Appointment History</h6>
+                        <h6 class="mb-0 fw-semibold">سجل المواعيد</h6>
                         <a href="{{ route('admin.appointments.create', ['patient_id' => $patient->id]) }}" class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-plus me-1"></i>Book
+                            <i class="fas fa-plus me-1"></i>حجز
                         </a>
                     </div>
                     <div class="card-body p-0">
@@ -165,10 +165,10 @@
                             <table class="table mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Date & Time</th>
-                                        <th>Doctor</th>
-                                        <th>Reason</th>
-                                        <th>Status</th>
+                                        <th>التاريخ والوقت</th>
+                                        <th>طبيب</th>
+                                        <th>السبب</th>
+                                        <th>الحالة</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -200,7 +200,7 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="5" class="text-center text-muted py-4">No appointments yet</td>
+                                        <td colspan="5" class="text-center text-muted py-4">لا توجد مواعيد</td>
                                     </tr>
                                     @endforelse
                                 </tbody>
@@ -214,9 +214,9 @@
             <div class="tab-pane fade" id="records-tab">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h6 class="mb-0 fw-semibold">Medical Records</h6>
+                        <h6 class="mb-0 fw-semibold">السجلات الطبية</h6>
                         <a href="{{ route('admin.medical-records.create', ['patient_id' => $patient->id]) }}" class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-plus me-1"></i>Add Record
+                            <i class="fas fa-plus me-1"></i>إضافة سجل
                         </a>
                     </div>
                     <div class="card-body p-0">
@@ -224,10 +224,10 @@
                             <table class="table mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Date</th>
-                                        <th>Diagnosis</th>
-                                        <th>Doctor</th>
-                                        <th>Actions</th>
+                                        <th>التاريخ</th>
+                                        <th>التشخيص</th>
+                                        <th>طبيب</th>
+                                        <th>الإجراءات</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -244,7 +244,7 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="4" class="text-center text-muted py-4">No medical records yet</td>
+                                        <td colspan="4" class="text-center text-muted py-4">لا توجد سجلات طبية</td>
                                     </tr>
                                     @endforelse
                                 </tbody>
@@ -258,9 +258,9 @@
             <div class="tab-pane fade" id="prescriptions-tab">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h6 class="mb-0 fw-semibold">Prescriptions</h6>
+                        <h6 class="mb-0 fw-semibold">الوصفات الطبية</h6>
                         <a href="{{ route('admin.prescriptions.create', ['patient_id' => $patient->id]) }}" class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-plus me-1"></i>Add Prescription
+                            <i class="fas fa-plus me-1"></i>إضافة وصفة
                         </a>
                     </div>
                     <div class="card-body p-0">
@@ -268,10 +268,10 @@
                             <table class="table mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Date</th>
-                                        <th>Doctor</th>
-                                        <th>Medications</th>
-                                        <th>Actions</th>
+                                        <th>التاريخ</th>
+                                        <th>طبيب</th>
+                                        <th>الأدوية</th>
+                                        <th>الإجراءات</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -288,7 +288,7 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="4" class="text-center text-muted py-4">No prescriptions yet</td>
+                                        <td colspan="4" class="text-center text-muted py-4">لا توجد وصفات طبية</td>
                                     </tr>
                                     @endforelse
                                 </tbody>
@@ -302,9 +302,9 @@
             <div class="tab-pane fade" id="invoices-tab">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h6 class="mb-0 fw-semibold">Billing & Invoices</h6>
+                        <h6 class="mb-0 fw-semibold">الفواتير والمدفوعات</h6>
                         <a href="{{ route('admin.invoices.create', ['patient_id' => $patient->id]) }}" class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-plus me-1"></i>Create Invoice
+                            <i class="fas fa-plus me-1"></i>إنشاء فاتورة
                         </a>
                     </div>
                     <div class="card-body p-0">
@@ -312,11 +312,11 @@
                             <table class="table mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Invoice #</th>
-                                        <th>Date</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
+                                        <th>رقم الفاتورة</th>
+                                        <th>التاريخ</th>
+                                        <th>المبلغ</th>
+                                        <th>الحالة</th>
+                                        <th>الإجراءات</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -341,7 +341,7 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="5" class="text-center text-muted py-4">No invoices yet</td>
+                                        <td colspan="5" class="text-center text-muted py-4">لا توجد فواتير</td>
                                     </tr>
                                     @endforelse
                                 </tbody>
@@ -350,7 +350,7 @@
                     </div>
                     @if($patient->invoices->count())
                     <div class="card-footer d-flex justify-content-between align-items-center">
-                        <span class="text-muted small">Total billed:</span>
+                        <span class="text-muted small">إجمالي المبلغ المفوتر:</span>
                         <span class="fw-bold">${{ number_format($patient->invoices->sum('total_amount'), 2) }}</span>
                     </div>
                     @endif

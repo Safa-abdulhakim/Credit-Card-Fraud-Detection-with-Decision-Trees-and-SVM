@@ -1,15 +1,15 @@
 @extends('layouts.admin')
-@section('title', 'Medical Records - ' . $patient->name)
-@section('page-title', 'Medical Records')
+@section('title', 'السجلات الطبية - ' . $patient->name)
+@section('page-title', 'السجلات الطبية')
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('admin.patients.index') }}">Patients</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">لوحة التحكم</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.patients.index') }}">المرضى</a></li>
     <li class="breadcrumb-item"><a href="{{ route('admin.patients.show', $patient) }}">{{ $patient->name }}</a></li>
-    <li class="breadcrumb-item active">Medical Records</li>
+    <li class="breadcrumb-item active">السجلات الطبية</li>
 @endsection
 @section('page-actions')
     <a href="{{ route('admin.medical-records.create', ['patient_id' => $patient->id]) }}" class="btn btn-primary btn-sm">
-        <i class="fas fa-plus me-1"></i>Add Record
+        <i class="fas fa-plus me-1"></i>إضافة سجل
     </a>
 @endsection
 @section('content')
@@ -22,26 +22,26 @@
                     {{ strtoupper(substr($patient->name, 0, 2)) }}
                 </div>
                 <h6 class="fw-bold mb-1">{{ $patient->name }}</h6>
-                <small class="text-muted">{{ ucfirst($patient->gender) }}, {{ $patient->age }} yrs</small>
+                <small class="text-muted">{{ ucfirst($patient->gender) }}، {{ $patient->age }} سنة</small>
                 @if($patient->blood_group)
                     <div class="mt-1"><span class="badge bg-danger">{{ $patient->blood_group }}</span></div>
                 @endif
                 <hr>
                 @if($patient->allergies)
                 <div class="text-start">
-                    <p class="small fw-semibold text-danger mb-1"><i class="fas fa-exclamation-triangle me-1"></i>Allergies</p>
+                    <p class="small fw-semibold text-danger mb-1"><i class="fas fa-exclamation-triangle me-1"></i>الحساسية</p>
                     <p class="small mb-2">{{ $patient->allergies }}</p>
                 </div>
                 @endif
                 @if($patient->medical_history)
                 <div class="text-start">
-                    <p class="small fw-semibold text-info mb-1"><i class="fas fa-history me-1"></i>History</p>
+                    <p class="small fw-semibold text-info mb-1"><i class="fas fa-history me-1"></i>التاريخ المرضي</p>
                     <p class="small mb-0">{{ Str::limit($patient->medical_history, 100) }}</p>
                 </div>
                 @endif
                 <div class="mt-3">
                     <a href="{{ route('admin.patients.show', $patient) }}" class="btn btn-sm btn-outline-primary w-100">
-                        <i class="fas fa-user me-1"></i>Full Profile
+                        <i class="fas fa-user me-1"></i>الملف الكامل
                     </a>
                 </div>
             </div>
@@ -60,7 +60,7 @@
                     <div>
                         <div class="fw-semibold">{{ $record->visit_date->format('F d, Y') }}</div>
                         <small class="text-muted">
-                            Dr. {{ $record->doctor->user->name ?? 'N/A' }}
+                            د. {{ $record->doctor->user->name ?? 'N/A' }}
                             @if($record->doctor->department)
                                 &middot; {{ $record->doctor->department->name }}
                             @endif
@@ -68,39 +68,39 @@
                     </div>
                 </div>
                 <div class="d-flex gap-2">
-                    <a href="{{ route('admin.medical-records.show', $record) }}" class="btn btn-sm btn-outline-info" title="View">
+                    <a href="{{ route('admin.medical-records.show', $record) }}" class="btn btn-sm btn-outline-info" title="عرض">
                         <i class="fas fa-eye"></i>
                     </a>
-                    <a href="{{ route('admin.medical-records.edit', $record) }}" class="btn btn-sm btn-outline-primary" title="Edit">
+                    <a href="{{ route('admin.medical-records.edit', $record) }}" class="btn btn-sm btn-outline-primary" title="تعديل">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <form action="{{ route('admin.medical-records.destroy', $record) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this medical record?')">
+                    <form action="{{ route('admin.medical-records.destroy', $record) }}" method="POST" class="d-inline" onsubmit="return confirm('حذف هذا السجل الطبي؟')">
                         @csrf @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete"><i class="fas fa-trash"></i></button>
+                        <button type="submit" class="btn btn-sm btn-outline-danger" title="حذف"><i class="fas fa-trash"></i></button>
                     </form>
                 </div>
             </div>
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <div class="fw-semibold small text-uppercase text-muted mb-1">Diagnosis</div>
+                        <div class="fw-semibold small text-uppercase text-muted mb-1">التشخيص</div>
                         <p class="mb-0">{{ $record->diagnosis }}</p>
                     </div>
                     @if($record->symptoms)
                     <div class="col-md-6">
-                        <div class="fw-semibold small text-uppercase text-muted mb-1">Symptoms</div>
+                        <div class="fw-semibold small text-uppercase text-muted mb-1">الأعراض</div>
                         <p class="mb-0">{{ $record->symptoms }}</p>
                     </div>
                     @endif
                     @if($record->treatment)
                     <div class="col-md-6">
-                        <div class="fw-semibold small text-uppercase text-muted mb-1">Treatment</div>
+                        <div class="fw-semibold small text-uppercase text-muted mb-1">العلاج</div>
                         <p class="mb-0">{{ $record->treatment }}</p>
                     </div>
                     @endif
                     @if($record->notes)
                     <div class="col-md-6">
-                        <div class="fw-semibold small text-uppercase text-muted mb-1">Notes</div>
+                        <div class="fw-semibold small text-uppercase text-muted mb-1">الملاحظات</div>
                         <p class="mb-0 text-muted">{{ $record->notes }}</p>
                     </div>
                     @endif
@@ -108,7 +108,7 @@
                     <div class="col-12">
                         <span class="badge bg-warning text-dark">
                             <i class="fas fa-calendar me-1"></i>
-                            Follow-up: {{ $record->follow_up_date->format('M d, Y') }}
+                            المتابعة: {{ $record->follow_up_date->format('M d, Y') }}
                         </span>
                     </div>
                     @endif
@@ -119,9 +119,9 @@
         <div class="card">
             <div class="card-body text-center py-5">
                 <i class="fas fa-file-medical fa-3x mb-3 text-muted opacity-25"></i>
-                <h6 class="text-muted">No medical records found for this patient</h6>
+                <h6 class="text-muted">لا توجد سجلات طبية لهذا المريض</h6>
                 <a href="{{ route('admin.medical-records.create', ['patient_id' => $patient->id]) }}" class="btn btn-primary mt-2">
-                    <i class="fas fa-plus me-2"></i>Add First Record
+                    <i class="fas fa-plus me-2"></i>إضافة أول سجل
                 </a>
             </div>
         </div>

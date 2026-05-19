@@ -1,13 +1,13 @@
 @extends('layouts.doctor')
-@section('title', 'My Patients')
-@section('page-title', 'My Patients')
+@section('title', 'مرضاي')
+@section('page-title', 'مرضاي')
 @section('content')
 <div class="card">
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover mb-0">
                 <thead class="table-light">
-                    <tr><th>Patient</th><th>Age/Gender</th><th>Phone</th><th>Blood Group</th></tr>
+                    <tr><th>المريض</th><th>العمر/الجنس</th><th>الهاتف</th><th>فصيلة الدم</th></tr>
                 </thead>
                 <tbody>
                     @forelse($patients as $patient)
@@ -23,12 +23,12 @@
                                 </div>
                             </div>
                         </td>
-                        <td>{{ $patient->age }} yrs / {{ ucfirst($patient->gender) }}</td>
+                        <td>{{ $patient->age }} سنة / {{ ucfirst($patient->gender) }}</td>
                         <td>{{ $patient->phone }}</td>
                         <td>{{ $patient->blood_group ?? '-' }}</td>
                     </tr>
                     @empty
-                    <tr><td colspan="4" class="text-center text-muted py-4">No patients yet</td></tr>
+                    <tr><td colspan="4" class="text-center text-muted py-4">لا يوجد مرضى بعد</td></tr>
                     @endforelse
                 </tbody>
             </table>

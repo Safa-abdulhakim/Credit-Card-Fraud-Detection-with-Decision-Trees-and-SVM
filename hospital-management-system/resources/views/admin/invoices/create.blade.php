@@ -1,24 +1,24 @@
 @extends('layouts.admin')
-@section('title', 'Create Invoice')
-@section('page-title', 'Create Invoice')
+@section('title', 'إنشاء فاتورة')
+@section('page-title', 'إنشاء فاتورة')
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('admin.invoices.index') }}">Invoices</a></li>
-    <li class="breadcrumb-item active">Create</li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">لوحة التحكم</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.invoices.index') }}">الفواتير</a></li>
+    <li class="breadcrumb-item active">إنشاء</li>
 @endsection
 @section('content')
 <div class="row g-3">
     <div class="col-12 col-lg-8">
         <div class="card">
-            <div class="card-header"><h6 class="mb-0 fw-semibold"><i class="fas fa-file-invoice-dollar me-2 text-success"></i>Invoice Details</h6></div>
+            <div class="card-header"><h6 class="mb-0 fw-semibold"><i class="fas fa-file-invoice-dollar me-2 text-success"></i>تفاصيل الفاتورة</h6></div>
             <div class="card-body">
                 <form action="{{ route('admin.invoices.store') }}" method="POST" id="invoiceForm">
                     @csrf
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">Patient <span class="text-danger">*</span></label>
+                            <label class="form-label fw-semibold">المريض <span class="text-danger">*</span></label>
                             <select name="patient_id" class="form-select @error('patient_id') is-invalid @enderror" required>
-                                <option value="">Select Patient</option>
+                                <option value="">اختر المريض</option>
                                 @foreach($patients as $p)
                                     <option value="{{ $p->id }}" {{ (old('patient_id') ?? request('patient_id')) == $p->id ? 'selected' : '' }}>{{ $p->name }}</option>
                                 @endforeach
@@ -26,50 +26,50 @@
                             @error('patient_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">Appointment (Optional)</label>
+                            <label class="form-label fw-semibold">الموعد (اختياري)</label>
                             <select name="appointment_id" class="form-select">
-                                <option value="">No Appointment</option>
+                                <option value="">بدون موعد</option>
                                 @foreach($appointments as $a)
                                     <option value="{{ $a->id }}" {{ (old('appointment_id') ?? request('appointment_id')) == $a->id ? 'selected' : '' }}>
-                                        {{ $a->patient->name ?? '' }} - {{ $a->appointment_date->format('M d') }} - Dr. {{ $a->doctor->user->name ?? '' }}
+                                        {{ $a->patient->name ?? '' }} - {{ $a->appointment_date->format('M d') }} - د. {{ $a->doctor->user->name ?? '' }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div class="col-12"><hr class="my-1"><h6 class="text-muted mb-0">Fee Breakdown</h6></div>
+                        <div class="col-12"><hr class="my-1"><h6 class="text-muted mb-0">تفصيل الرسوم</h6></div>
 
                         <div class="col-md-6">
-                            <label class="form-label">Consultation Fee ($)</label>
+                            <label class="form-label">رسوم الاستشارة ($)</label>
                             <input type="number" name="consultation_fee" class="form-control fee-input" value="{{ old('consultation_fee', 0) }}" min="0" step="0.01">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Medicine / Pharmacy Fee ($)</label>
+                            <label class="form-label">رسوم الأدوية / الصيدلية ($)</label>
                             <input type="number" name="medicine_fee" class="form-control fee-input" value="{{ old('medicine_fee', 0) }}" min="0" step="0.01">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Test / Lab Fee ($)</label>
+                            <label class="form-label">رسوم الفحوصات / المختبر ($)</label>
                             <input type="number" name="test_fee" class="form-control fee-input" value="{{ old('test_fee', 0) }}" min="0" step="0.01">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Other Charges ($)</label>
+                            <label class="form-label">رسوم أخرى ($)</label>
                             <input type="number" name="other_fee" class="form-control fee-input" value="{{ old('other_fee', 0) }}" min="0" step="0.01">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Discount ($)</label>
+                            <label class="form-label">الخصم ($)</label>
                             <input type="number" name="discount" class="form-control fee-input" value="{{ old('discount', 0) }}" min="0" step="0.01">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Due Date</label>
+                            <label class="form-label">تاريخ الاستحقاق</label>
                             <input type="date" name="due_date" class="form-control" value="{{ old('due_date') }}" min="{{ date('Y-m-d') }}">
                         </div>
                         <div class="col-12">
-                            <label class="form-label">Notes</label>
-                            <textarea name="notes" class="form-control" rows="2" placeholder="Optional notes...">{{ old('notes') }}</textarea>
+                            <label class="form-label">الملاحظات</label>
+                            <textarea name="notes" class="form-control" rows="2" placeholder="ملاحظات اختيارية...">{{ old('notes') }}</textarea>
                         </div>
                         <div class="col-12 d-flex gap-2 mt-2">
-                            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Create Invoice</button>
-                            <a href="{{ route('admin.invoices.index') }}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>إنشاء فاتورة</button>
+                            <a href="{{ route('admin.invoices.index') }}" class="btn btn-secondary">إلغاء</a>
                         </div>
                     </div>
                 </form>
@@ -81,32 +81,32 @@
     <div class="col-12 col-lg-4">
         <div class="card sticky-top" style="top:80px;">
             <div class="card-header bg-primary text-white">
-                <h6 class="mb-0 text-white"><i class="fas fa-calculator me-2"></i>Invoice Summary</h6>
+                <h6 class="mb-0 text-white"><i class="fas fa-calculator me-2"></i>ملخص الفاتورة</h6>
             </div>
             <div class="card-body">
                 <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted">Consultation:</span>
+                    <span class="text-muted">الاستشارة:</span>
                     <span id="sum-consultation">$0.00</span>
                 </div>
                 <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted">Medicine:</span>
+                    <span class="text-muted">الأدوية:</span>
                     <span id="sum-medicine">$0.00</span>
                 </div>
                 <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted">Tests / Lab:</span>
+                    <span class="text-muted">الفحوصات / المختبر:</span>
                     <span id="sum-test">$0.00</span>
                 </div>
                 <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted">Other:</span>
+                    <span class="text-muted">أخرى:</span>
                     <span id="sum-other">$0.00</span>
                 </div>
                 <div class="d-flex justify-content-between mb-2 text-danger">
-                    <span>Discount:</span>
+                    <span>الخصم:</span>
                     <span id="sum-discount">-$0.00</span>
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between fw-bold fs-5">
-                    <span>Total:</span>
+                    <span>الإجمالي:</span>
                     <span id="sum-total" class="text-primary">$0.00</span>
                 </div>
             </div>

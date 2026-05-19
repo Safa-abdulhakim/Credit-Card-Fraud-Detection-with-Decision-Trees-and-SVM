@@ -1,13 +1,13 @@
 @extends('layouts.admin')
-@section('title', 'Prescriptions')
-@section('page-title', 'Prescriptions')
+@section('title', 'الوصفات الطبية')
+@section('page-title', 'الوصفات الطبية')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Prescriptions</li>
+    <li class="breadcrumb-item active">الوصفات الطبية</li>
 @endsection
 @section('page-actions')
     <a href="{{ route('admin.prescriptions.create') }}" class="btn btn-primary">
-        <i class="fas fa-plus me-2"></i>Add Prescription
+        <i class="fas fa-plus me-2"></i>إضافة وصفة طبية
     </a>
 @endsection
 @section('content')
@@ -15,11 +15,11 @@
     <div class="card-body py-2">
         <form method="GET" class="row g-2 align-items-end">
             <div class="col-md-4">
-                <input type="text" name="search" class="form-control form-control-sm" placeholder="Search patient or medication..." value="{{ request('search') }}">
+                <input type="text" name="search" class="form-control form-control-sm" placeholder="البحث عن مريض أو دواء..." value="{{ request('search') }}">
             </div>
             <div class="col-md-3">
                 <select name="doctor_id" class="form-select form-select-sm">
-                    <option value="">All Doctors</option>
+                    <option value="">جميع الأطباء</option>
                     @foreach($doctors as $doc)
                         <option value="{{ $doc->id }}" {{ request('doctor_id') == $doc->id ? 'selected' : '' }}>{{ $doc->user->name ?? 'N/A' }}</option>
                     @endforeach
@@ -29,8 +29,8 @@
                 <input type="date" name="date" class="form-control form-control-sm" value="{{ request('date') }}">
             </div>
             <div class="col-md-3">
-                <button type="submit" class="btn btn-primary btn-sm me-1"><i class="fas fa-search"></i> Filter</button>
-                <a href="{{ route('admin.prescriptions.index') }}" class="btn btn-secondary btn-sm">Reset</a>
+                <button type="submit" class="btn btn-primary btn-sm me-1"><i class="fas fa-search"></i> تصفية</button>
+                <a href="{{ route('admin.prescriptions.index') }}" class="btn btn-secondary btn-sm">إعادة تعيين</a>
             </div>
         </form>
     </div>
@@ -43,12 +43,12 @@
                 <thead class="table-light">
                     <tr>
                         <th>#</th>
-                        <th>Patient</th>
-                        <th>Doctor</th>
-                        <th>Medicine</th>
-                        <th>Date</th>
-                        <th>Duration</th>
-                        <th>Actions</th>
+                        <th>المريض</th>
+                        <th>الطبيب</th>
+                        <th>الدواء</th>
+                        <th>التاريخ</th>
+                        <th>المدة</th>
+                        <th>الإجراءات</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,15 +69,15 @@
                         </td>
                         <td><small>{{ $rx->created_at->format('M d, Y') }}</small></td>
                         <td>
-                            <span class="badge bg-light text-dark">{{ $rx->duration_days }} days</span>
+                            <span class="badge bg-light text-dark">{{ $rx->duration_days }} يوم</span>
                         </td>
                         <td>
                             <div class="btn-group btn-group-sm">
-                                <a href="{{ route('admin.prescriptions.show', $rx) }}" class="btn btn-outline-info" title="View"><i class="fas fa-eye"></i></a>
-                                <a href="{{ route('admin.prescriptions.edit', $rx) }}" class="btn btn-outline-primary" title="Edit"><i class="fas fa-edit"></i></a>
-                                <form action="{{ route('admin.prescriptions.destroy', $rx) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this prescription?')">
+                                <a href="{{ route('admin.prescriptions.show', $rx) }}" class="btn btn-outline-info" title="عرض"><i class="fas fa-eye"></i></a>
+                                <a href="{{ route('admin.prescriptions.edit', $rx) }}" class="btn btn-outline-primary" title="تعديل"><i class="fas fa-edit"></i></a>
+                                <form action="{{ route('admin.prescriptions.destroy', $rx) }}" method="POST" class="d-inline" onsubmit="return confirm('هل تريد حذف هذه الوصفة؟')">
                                     @csrf @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-danger" title="Delete"><i class="fas fa-trash"></i></button>
+                                    <button type="submit" class="btn btn-outline-danger" title="حذف"><i class="fas fa-trash"></i></button>
                                 </form>
                             </div>
                         </td>
@@ -86,7 +86,7 @@
                     <tr>
                         <td colspan="7" class="text-center text-muted py-5">
                             <i class="fas fa-prescription-bottle-alt fa-2x mb-2 d-block opacity-25"></i>
-                            No prescriptions found.
+                            لا توجد وصفات طبية.
                         </td>
                     </tr>
                     @endforelse

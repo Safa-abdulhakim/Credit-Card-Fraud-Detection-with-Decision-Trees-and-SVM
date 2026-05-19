@@ -1,13 +1,13 @@
 @extends('layouts.doctor')
-@section('title', 'Medical Records')
-@section('page-title', 'My Medical Records')
+@section('title', 'السجلات الطبية')
+@section('page-title', 'سجلاتي الطبية')
 @section('content')
 <div class="card">
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover mb-0">
                 <thead class="table-light">
-                    <tr><th>#</th><th>Patient</th><th>Diagnosis</th><th>Treatment</th><th>Date</th><th>Prescriptions</th></tr>
+                    <tr><th>#</th><th>المريض</th><th>التشخيص</th><th>العلاج</th><th>التاريخ</th><th>الوصفات الطبية</th></tr>
                 </thead>
                 <tbody>
                     @forelse($records as $rec)
@@ -17,10 +17,10 @@
                         <td>{{ Str::limit($rec->diagnosis, 60) }}</td>
                         <td>{{ Str::limit($rec->treatment, 60) }}</td>
                         <td>{{ $rec->record_date->format('M d, Y') }}</td>
-                        <td><span class="badge bg-info">{{ $rec->prescriptions->count() }} medicines</span></td>
+                        <td><span class="badge bg-info">{{ $rec->prescriptions->count() }} أدوية</span></td>
                     </tr>
                     @empty
-                    <tr><td colspan="6" class="text-center text-muted py-4">No medical records found</td></tr>
+                    <tr><td colspan="6" class="text-center text-muted py-4">لا توجد سجلات طبية</td></tr>
                     @endforelse
                 </tbody>
             </table>
