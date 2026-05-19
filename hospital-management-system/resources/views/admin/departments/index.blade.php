@@ -1,12 +1,12 @@
 @extends('layouts.admin')
-@section('title', 'Departments')
-@section('page-title', 'Departments')
+@section('title', 'الأقسام')
+@section('page-title', 'الأقسام')
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Departments</li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">لوحة التحكم</a></li>
+    <li class="breadcrumb-item active">الأقسام</li>
 @endsection
 @section('page-actions')
-    <a href="{{ route('admin.departments.create') }}" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Add Department</a>
+    <a href="{{ route('admin.departments.create') }}" class="btn btn-primary"><i class="fas fa-plus me-2"></i>إضافة قسم</a>
 @endsection
 @section('content')
 <div class="card">
@@ -16,12 +16,12 @@
                 <thead class="table-light">
                     <tr>
                         <th>#</th>
-                        <th>Department Name</th>
-                        <th>Description</th>
-                        <th>Head Doctor</th>
-                        <th>Doctors</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th>اسم القسم</th>
+                        <th>الوصف</th>
+                        <th>رئيس القسم</th>
+                        <th>الأطباء</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,22 +34,22 @@
                         <td><span class="badge bg-primary">{{ $dept->doctors_count }}</span></td>
                         <td>
                             <span class="badge bg-{{ $dept->is_active ? 'success' : 'danger' }}">
-                                {{ $dept->is_active ? 'Active' : 'Inactive' }}
+                                {{ $dept->is_active ? 'نشط' : 'غير نشط' }}
                             </span>
                         </td>
                         <td>
                             <div class="btn-group btn-group-sm">
-                                <a href="{{ route('admin.departments.show', $dept) }}" class="btn btn-outline-info" title="View"><i class="fas fa-eye"></i></a>
-                                <a href="{{ route('admin.departments.edit', $dept) }}" class="btn btn-outline-primary" title="Edit"><i class="fas fa-edit"></i></a>
-                                <form action="{{ route('admin.departments.destroy', $dept) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this department?')">
+                                <a href="{{ route('admin.departments.show', $dept) }}" class="btn btn-outline-info" title="عرض"><i class="fas fa-eye"></i></a>
+                                <a href="{{ route('admin.departments.edit', $dept) }}" class="btn btn-outline-primary" title="تعديل"><i class="fas fa-edit"></i></a>
+                                <form action="{{ route('admin.departments.destroy', $dept) }}" method="POST" class="d-inline" onsubmit="return confirm('حذف هذا القسم؟')">
                                     @csrf @method('DELETE')
-                                    <button class="btn btn-outline-danger" title="Delete"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-outline-danger" title="حذف"><i class="fas fa-trash"></i></button>
                                 </form>
                             </div>
                         </td>
                     </tr>
                     @empty
-                    <tr><td colspan="7" class="text-center text-muted py-4">No departments found</td></tr>
+                    <tr><td colspan="7" class="text-center text-muted py-4">لا توجد أقسام</td></tr>
                     @endforelse
                 </tbody>
             </table>

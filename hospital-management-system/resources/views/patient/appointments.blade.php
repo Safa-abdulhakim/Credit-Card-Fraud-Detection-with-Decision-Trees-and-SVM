@@ -1,8 +1,8 @@
 @extends('layouts.patient')
-@section('title', 'My Appointments')
-@section('page-title', 'My Appointments')
+@section('title', 'مواعيدي')
+@section('page-title', 'مواعيدي')
 @section('page-actions')
-    <a href="{{ route('patient.appointments.book') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus me-1"></i>Book New</a>
+    <a href="{{ route('patient.appointments.book') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus me-1"></i>حجز جديد</a>
 @endsection
 @section('content')
 <div class="card mb-3">
@@ -10,16 +10,16 @@
         <form method="GET" class="row g-2 align-items-end">
             <div class="col-md-4">
                 <select name="status" class="form-select form-select-sm">
-                    <option value="">All Status</option>
-                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                    <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
-                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
-                    <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                    <option value="">جميع الحالات</option>
+                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>معلق</option>
+                    <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>موافق عليه</option>
+                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>مكتمل</option>
+                    <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>ملغي</option>
                 </select>
             </div>
             <div class="col-md-3">
                 <button type="submit" class="btn btn-primary btn-sm me-1"><i class="fas fa-search"></i></button>
-                <a href="{{ route('patient.appointments') }}" class="btn btn-secondary btn-sm">Reset</a>
+                <a href="{{ route('patient.appointments') }}" class="btn btn-secondary btn-sm">إعادة تعيين</a>
             </div>
         </form>
     </div>
@@ -29,7 +29,7 @@
         <div class="table-responsive">
             <table class="table table-hover mb-0">
                 <thead class="table-light">
-                    <tr><th>Doctor</th><th>Specialization</th><th>Date</th><th>Time</th><th>Type</th><th>Status</th></tr>
+                    <tr><th>الطبيب</th><th>التخصص</th><th>التاريخ</th><th>الوقت</th><th>النوع</th><th>الحالة</th></tr>
                 </thead>
                 <tbody>
                     @forelse($appointments as $appt)
@@ -42,7 +42,7 @@
                         <td><span class="badge bg-{{ $appt->status_badge }}">{{ ucfirst($appt->status) }}</span></td>
                     </tr>
                     @empty
-                    <tr><td colspan="6" class="text-center text-muted py-4">No appointments yet. <a href="{{ route('patient.appointments.book') }}">Book one now!</a></td></tr>
+                    <tr><td colspan="6" class="text-center text-muted py-4">لا توجد مواعيد بعد. <a href="{{ route('patient.appointments.book') }}">احجز الآن!</a></td></tr>
                     @endforelse
                 </tbody>
             </table>

@@ -1,13 +1,13 @@
 @extends('layouts.patient')
-@section('title', 'My Invoices')
-@section('page-title', 'My Invoices')
+@section('title', 'فواتيري')
+@section('page-title', 'فواتيري')
 @section('content')
 <div class="card">
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover mb-0">
                 <thead class="table-light">
-                    <tr><th>Invoice #</th><th>Total Amount</th><th>Paid</th><th>Balance</th><th>Status</th><th>Date</th></tr>
+                    <tr><th>رقم الفاتورة</th><th>المبلغ الإجمالي</th><th>مدفوع</th><th>الرصيد</th><th>الحالة</th><th>التاريخ</th></tr>
                 </thead>
                 <tbody>
                     @forelse($invoices as $inv)
@@ -22,7 +22,7 @@
                         <td><small>{{ $inv->created_at->format('M d, Y') }}</small></td>
                     </tr>
                     @empty
-                    <tr><td colspan="6" class="text-center text-muted py-4">No invoices found</td></tr>
+                    <tr><td colspan="6" class="text-center text-muted py-4">لا توجد فواتير</td></tr>
                     @endforelse
                 </tbody>
             </table>

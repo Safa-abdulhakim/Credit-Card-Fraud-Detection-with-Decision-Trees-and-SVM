@@ -1,14 +1,14 @@
 @extends('layouts.patient')
-@section('title', 'Book Appointment')
-@section('page-title', 'Book New Appointment')
+@section('title', 'حجز موعد')
+@section('page-title', 'حجز موعد جديد')
 @section('content')
 <div class="card">
-    <div class="card-header"><h6 class="mb-0">Select Doctor & Schedule Your Visit</h6></div>
+    <div class="card-header"><h6 class="mb-0">اختر الطبيب وحدد موعد زيارتك</h6></div>
     <div class="card-body">
         <form action="{{ route('patient.appointments.store') }}" method="POST">
             @csrf
             <div class="mb-4">
-                <label class="form-label fw-semibold">Select Doctor <span class="text-danger">*</span></label>
+                <label class="form-label fw-semibold">اختر طبيباً <span class="text-danger">*</span></label>
                 <div class="row g-2">
                     @foreach($doctors as $doc)
                     <div class="col-12 col-md-6 col-lg-4">
@@ -28,7 +28,7 @@
                                     <div class="text-muted small">{{ $doc->department->name ?? '' }}</div>
                                     <div class="mt-1">
                                         <span class="badge bg-light text-dark">${{ number_format($doc->consultation_fee, 2) }}</span>
-                                        <span class="badge bg-light text-dark">{{ $doc->experience_years }} yrs exp</span>
+                                        <span class="badge bg-light text-dark">{{ $doc->experience_years }} سنة خبرة</span>
                                     </div>
                                 </div>
                             </div>
@@ -40,26 +40,26 @@
             </div>
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Preferred Date <span class="text-danger">*</span></label>
+                    <label class="form-label fw-semibold">التاريخ المفضل <span class="text-danger">*</span></label>
                     <input type="date" name="appointment_date" class="form-control @error('appointment_date') is-invalid @enderror" value="{{ old('appointment_date') }}" min="{{ date('Y-m-d') }}" required>
                     @error('appointment_date')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Preferred Time <span class="text-danger">*</span></label>
+                    <label class="form-label fw-semibold">الوقت المفضل <span class="text-danger">*</span></label>
                     <input type="time" name="appointment_time" class="form-control @error('appointment_time') is-invalid @enderror" value="{{ old('appointment_time', '09:00') }}" required>
                     @error('appointment_time')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 <div class="col-12">
-                    <label class="form-label fw-semibold">Describe Your Symptoms</label>
-                    <textarea name="symptoms" class="form-control" rows="3" placeholder="What are you experiencing? Please describe your symptoms...">{{ old('symptoms') }}</textarea>
+                    <label class="form-label fw-semibold">صف أعراضك</label>
+                    <textarea name="symptoms" class="form-control" rows="3" placeholder="ما الذي تشعر به؟ يرجى وصف أعراضك...">{{ old('symptoms') }}</textarea>
                 </div>
                 <div class="col-12">
                     <div class="alert alert-info small">
                         <i class="fas fa-info-circle me-2"></i>
-                        Your appointment will be submitted as <strong>Pending</strong>. The reception team will confirm it shortly.
+                        سيتم تقديم موعدك بحالة <strong>معلق</strong>. سيقوم فريق الاستقبال بتأكيده قريباً.
                     </div>
-                    <button type="submit" class="btn btn-primary me-2"><i class="fas fa-calendar-check me-2"></i>Book Appointment</button>
-                    <a href="{{ route('patient.dashboard') }}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary me-2"><i class="fas fa-calendar-check me-2"></i>حجز موعد</button>
+                    <a href="{{ route('patient.dashboard') }}" class="btn btn-secondary">إلغاء</a>
                 </div>
             </div>
         </form>
