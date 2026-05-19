@@ -1,0 +1,118 @@
+@extends('layouts.admin')
+@section('title', 'Department Details')
+@section('page-title', $department->name)
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.departments.index') }}">Departments</a></li>
+    <li class="breadcrumb-item active">{{ $department->name }}</li>
+@endsection
+@section('page-actions')
+    <a href="{{ route('admin.departments.edit', $department) }}" class="btn btn-primary btn-sm">
+        <i class="fas fa-edit me-1"></i>Edit Department
+    </a>
+@endsection
+@section('content')
+<div class="row g-3">
+    <div class="col-12 col-lg-4">
+        <div class="card">
+            <div class="card-body text-center p-4">
+                <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width:80px;height:80px;font-size:2rem;">
+                    <i class="fas fa-building"></i>
+                </div>
+                <h5 class="fw-bold">{{ $department->name }}</h5>
+                <p class="text-muted">{{ $department->description ?? 'No description provided.' }}</p>
+                <span class="badge bg-{{ $department->is_active ? 'success' : 'danger' }} mb-2">
+                    {{ $department->is_active ? 'Active' : 'Inactive' }}
+                </span>
+                @if($department->head_doctor)
+                    <div class="mt-2">
+                        <small class="text-muted"><i class="fas fa-user-md me-1"></i>Head: {{ $department->head_doctor }}</small>
+                    </div>
+                @endif
+                <hr>
+                <div class="row text-center">
+                    <div class="col-6">
+                        <div class="fw-bold fs-4 text-primary">{{ $department->doctors->count() }}</div>
+                        <small class="text-muted">Doctors</small>
+                    </div>
+                    <div class="col-6">
+                        <div class="fw-bold fs-4 text-success">{{ $department->doctors->where('is_available', true)->count() }}</div>
+                        <small class="text-muted">Available</small>
+                    </div>
+                </div>
+                <div class="mt-3 d-flex gap-2 justify-content-center">
+                    <a href="{{ route('admin.departments.edit', $department) }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-edit me-1"></i>Edit
+                    </a>
+                    <a href="{{ route('admin.departments.index') }}" class="btn btn-secondary btn-sm">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-8">
+        <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h6 class="mb-0 fw-semibold">
+                    <i class="fas fa-user-md me-2 text-primary"></i>Doctors in {{ $department->name }}
+                </h6>
+                <a href="{{ route('admin.doctors.create') }}" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-plus me-1"></i>Add Doctor
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Specialization</th>
+                                <th>Experience</th>
+                                <th>Consultation Fee</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($department->doctors as $doc)
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center me-2" style="width:34px;height:34px;font-size:0.8rem;font-weight:700;">
+                                            {{ strtoupper(substr($doc->user->name ?? 'DR', 0, 2)) }}
+                                        </div>
+                                        <div>
+                                            <div class="fw-semibold small">{{ $doc->user->name ?? 'N/A' }}</div>
+                                            <small class="text-muted">{{ $doc->user->email ?? '' }}</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ $doc->specialization }}</td>
+                                <td>{{ $doc->experience_years }} yrs</td>
+                                <td>${{ number_format($doc->consultation_fee, 2) }}</td>
+                                <td>
+                                    <span class="badge bg-{{ $doc->is_available ? 'success' : 'secondary' }}">
+                                        {{ $doc->is_available ? 'Available' : 'Unavailable' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.doctors.show', $doc) }}" class="btn btn-sm btn-outline-info">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-4">
+                                    <i class="fas fa-user-md fa-2x mb-2 d-block opacity-25"></i>
+                                    No doctors assigned to this department yet.
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
