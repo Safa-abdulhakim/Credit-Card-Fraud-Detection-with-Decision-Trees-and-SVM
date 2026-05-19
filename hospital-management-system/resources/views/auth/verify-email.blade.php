@@ -1,30 +1,27 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
+    <div class="text-center mb-4">
+        <i class="fas fa-envelope-open-text fa-3x text-primary mb-3"></i>
+        <h4 class="fw-bold">Verify Your Email</h4>
+        <p class="text-muted small">Thanks for signing up! Please verify your email by clicking the link we sent you.</p>
     </div>
 
     @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-green-600">
-            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+        <div class="alert alert-success small">
+            <i class="fas fa-check-circle me-2"></i>A new verification link has been sent to your email address.
         </div>
     @endif
 
-    <div class="mt-4 flex items-center justify-between">
+    <div class="d-flex flex-column gap-2">
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
-
-            <div>
-                <x-primary-button>
-                    {{ __('Resend Verification Email') }}
-                </x-primary-button>
-            </div>
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="fas fa-paper-plane me-2"></i>Resend Verification Email
+            </button>
         </form>
-
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-
-            <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                {{ __('Log Out') }}
+            <button type="submit" class="btn btn-outline-secondary w-100">
+                <i class="fas fa-sign-out-alt me-2"></i>Logout
             </button>
         </form>
     </div>

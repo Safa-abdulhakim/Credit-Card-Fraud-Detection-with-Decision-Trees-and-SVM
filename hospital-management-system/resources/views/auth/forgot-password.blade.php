@@ -1,25 +1,28 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-    </div>
+    <h4 class="fw-bold text-center mb-1">Forgot Password?</h4>
+    <p class="text-muted text-center small mb-4">Enter your email to receive a reset link</p>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    <x-auth-session-status class="mb-3" :status="session('status')" />
 
     <form method="POST" action="{{ route('password.email') }}">
         @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <div class="mb-4">
+            <label class="form-label fw-semibold">Email Address</label>
+            <div class="input-group">
+                <span class="input-group-text bg-light"><i class="fas fa-envelope text-muted"></i></span>
+                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
+                    value="{{ old('email') }}" placeholder="you@example.com" required autofocus>
+                @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
         </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
-        </div>
+        <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">
+            <i class="fas fa-paper-plane me-2"></i>Send Reset Link
+        </button>
     </form>
+
+    <p class="text-center small text-muted mt-4 mb-0">
+        <a href="{{ route('login') }}" class="text-primary text-decoration-none">
+            <i class="fas fa-arrow-left me-1"></i>Back to Login
+        </a>
+    </p>
 </x-guest-layout>
