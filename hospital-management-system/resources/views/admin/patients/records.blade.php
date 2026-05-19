@@ -14,7 +14,6 @@
 @endsection
 @section('content')
 <div class="row g-3">
-    <!-- Patient Summary Card -->
     <div class="col-12 col-lg-3">
         <div class="card">
             <div class="card-body text-center p-3">
@@ -47,8 +46,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Records List -->
     <div class="col-12 col-lg-9">
         @forelse($records as $record)
         <div class="card mb-3">
@@ -68,12 +65,8 @@
                     </div>
                 </div>
                 <div class="d-flex gap-2">
-                    <a href="{{ route('admin.medical-records.show', $record) }}" class="btn btn-sm btn-outline-info" title="عرض">
-                        <i class="fas fa-eye"></i>
-                    </a>
-                    <a href="{{ route('admin.medical-records.edit', $record) }}" class="btn btn-sm btn-outline-primary" title="تعديل">
-                        <i class="fas fa-edit"></i>
-                    </a>
+                    <a href="{{ route('admin.medical-records.show', $record) }}" class="btn btn-sm btn-outline-info" title="عرض"><i class="fas fa-eye"></i></a>
+                    <a href="{{ route('admin.medical-records.edit', $record) }}" class="btn btn-sm btn-outline-primary" title="تعديل"><i class="fas fa-edit"></i></a>
                     <form action="{{ route('admin.medical-records.destroy', $record) }}" method="POST" class="d-inline" onsubmit="return confirm('حذف هذا السجل الطبي؟')">
                         @csrf @method('DELETE')
                         <button type="submit" class="btn btn-sm btn-outline-danger" title="حذف"><i class="fas fa-trash"></i></button>
@@ -106,10 +99,7 @@
                     @endif
                     @if($record->follow_up_date)
                     <div class="col-12">
-                        <span class="badge bg-warning text-dark">
-                            <i class="fas fa-calendar me-1"></i>
-                            المتابعة: {{ $record->follow_up_date->format('M d, Y') }}
-                        </span>
+                        <span class="badge bg-warning text-dark"><i class="fas fa-calendar me-1"></i>المتابعة: {{ $record->follow_up_date->format('M d, Y') }}</span>
                     </div>
                     @endif
                 </div>
@@ -120,13 +110,10 @@
             <div class="card-body text-center py-5">
                 <i class="fas fa-file-medical fa-3x mb-3 text-muted opacity-25"></i>
                 <h6 class="text-muted">لا توجد سجلات طبية لهذا المريض</h6>
-                <a href="{{ route('admin.medical-records.create', ['patient_id' => $patient->id]) }}" class="btn btn-primary mt-2">
-                    <i class="fas fa-plus me-2"></i>إضافة أول سجل
-                </a>
+                <a href="{{ route('admin.medical-records.create', ['patient_id' => $patient->id]) }}" class="btn btn-primary mt-2"><i class="fas fa-plus me-2"></i>إضافة أول سجل</a>
             </div>
         </div>
         @endforelse
-
         @if($records->hasPages())
         <div class="mt-3">{{ $records->links() }}</div>
         @endif
