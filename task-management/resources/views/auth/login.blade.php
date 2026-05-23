@@ -2,6 +2,7 @@
 @section('title','تسجيل الدخول')
 @section('content')
 @if(session('status'))<div class="alert alert-success mb-3" style="border-radius:.6rem">{{ session('status') }}</div>@endif
+@if(session('success'))<div class="alert alert-success mb-3" style="border-radius:.6rem"><i class="bi bi-check-circle me-2"></i>{{ session('success') }}</div>@endif
 <h5 class="fw-bold mb-1">مرحباً بك!</h5>
 <p class="text-muted small mb-4">سجّل دخولك للوصول إلى لوحة التحكم</p>
 <form method="POST" action="{{ route('login') }}">
