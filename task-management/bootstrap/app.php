@@ -11,12 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // تطبيق PreventBackHistory على جميع صفحات الويب
         $middleware->web(append: [
             \App\Http\Middleware\PreventBackHistory::class,
         ]);
-
-        // تسجيل EnsureTaskOwner كـ alias لاستخدامه في الـ Routes
         $middleware->alias([
             'task.owner' => \App\Http\Middleware\EnsureTaskOwner::class,
         ]);

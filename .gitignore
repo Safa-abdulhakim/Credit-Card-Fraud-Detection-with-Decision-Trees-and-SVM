@@ -1,0 +1,22 @@
+# Laravel
+task-management/.env
+task-management/.env.backup
+task-management/.env.production
+task-management/vendor/
+task-management/node_modules/
+task-management/public/build/
+task-management/public/hot
+task-management/public/storage
+task-management/storage/*.key
+task-management/storage/app/public/
+task-management/storage/framework/cache/
+task-management/storage/framework/sessions/
+task-management/storage/framework/views/
+task-management/storage/logs/
+task-management/bootstrap/cache/
+task-management/database/database.sqlite
+task-management/database/database.sqlite-shm
+task-management/database/database.sqlite-wal
+task-management/.phpunit.result.cache
+task-management/.phpunit.cache/
+task-management/auth.json
