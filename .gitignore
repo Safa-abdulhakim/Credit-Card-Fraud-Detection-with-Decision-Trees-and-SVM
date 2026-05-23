@@ -13,7 +13,7 @@ task-management/storage/framework/cache/
 task-management/storage/framework/sessions/
 task-management/storage/framework/views/
 task-management/storage/logs/
-task-management/bootstrap/cache/
+task-management/bootstrap/cache/*.php
 task-management/database/database.sqlite
 task-management/database/database.sqlite-shm
 task-management/database/database.sqlite-wal
