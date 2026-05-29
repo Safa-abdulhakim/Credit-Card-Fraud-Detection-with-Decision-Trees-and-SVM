@@ -64,9 +64,9 @@
                         <div class="d-flex justify-content-center gap-1">
                             <a href="{{ route('tasks.show',$task) }}" class="btn btn-sm btn-outline-primary" title="عرض"><i class="bi bi-eye"></i></a>
                             <a href="{{ route('tasks.edit',$task) }}" class="btn btn-sm btn-outline-secondary" title="تعديل"><i class="bi bi-pencil"></i></a>
-                            <form method="POST" action="{{ route('tasks.destroy',$task) }}" onsubmit="return confirm('هل أنت متأكد من حذف هذه المهمة؟')">
+                            <form method="POST" action="{{ route('tasks.destroy',$task) }}">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger" title="حذف"><i class="bi bi-trash"></i></button>
+                                <button type="button" class="btn btn-sm btn-outline-danger" title="حذف" data-confirm-delete="هل أنت متأكد من حذف مهمة «{{ $task->title }}»؟ لا يمكن التراجع عن هذا الإجراء."><i class="bi bi-trash"></i></button>
                             </form>
                         </div>
                     </td>

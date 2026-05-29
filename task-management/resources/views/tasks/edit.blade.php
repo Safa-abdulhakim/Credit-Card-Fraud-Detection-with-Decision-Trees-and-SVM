@@ -49,16 +49,14 @@
                     </div>
                 </div>
             </form>
-            {{-- ✅ الأزرار خارج form التعديل --}}
             <div class="d-flex gap-3 pt-2 border-top">
-                <button type="submit" form="update-form" class="btn btn-warning px-4 text-white">
+                <button type="button" class="btn btn-warning px-4 text-white" data-confirm-save form="update-form">
                     <i class="bi bi-save me-2"></i>حفظ التعديلات
                 </button>
                 <a href="{{ route('tasks.show',$task) }}" class="btn btn-outline-secondary px-4">إلغاء</a>
-                {{-- ✅ form الحذف منفصل تماماً --}}
-                <form method="POST" action="{{ route('tasks.destroy',$task) }}" class="ms-auto" onsubmit="return confirm('هل أنت متأكد من حذف هذه المهمة؟')">
+                <form method="POST" action="{{ route('tasks.destroy',$task) }}" class="ms-auto">
                     @csrf @method('DELETE')
-                    <button type="submit" class="btn btn-outline-danger px-4"><i class="bi bi-trash me-2"></i>حذف</button>
+                    <button type="button" class="btn btn-outline-danger px-4" data-confirm-delete="هل أنت متأكد من حذف مهمة «{{ $task->title }}»؟ لا يمكن التراجع عن هذا الإجراء."><i class="bi bi-trash me-2"></i>حذف</button>
                 </form>
             </div>
         </div>

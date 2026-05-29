@@ -7,9 +7,9 @@
         <a href="{{ route('tasks.index') }}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-right me-1"></i>رجوع</a>
         <div class="d-flex gap-2">
             <a href="{{ route('tasks.edit',$task) }}" class="btn btn-sm btn-warning text-white"><i class="bi bi-pencil me-1"></i>تعديل</a>
-            <form method="POST" action="{{ route('tasks.destroy',$task) }}" onsubmit="return confirm('هل أنت متأكد من حذف هذه المهمة؟')">
+            <form method="POST" action="{{ route('tasks.destroy',$task) }}">
                 @csrf @method('DELETE')
-                <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-trash me-1"></i>حذف</button>
+                <button type="button" class="btn btn-sm btn-danger" data-confirm-delete="هل أنت متأكد من حذف مهمة «{{ $task->title }}»؟ لا يمكن التراجع عن هذا الإجراء."><i class="bi bi-trash me-1"></i>حذف</button>
             </form>
         </div>
     </div>
