@@ -1,12 +1,21 @@
 @extends('layouts.app')
-@section('title','My Orders')
+@php $isAr = app()->getLocale() === 'ar'; @endphp
+@section('title', $isAr ? 'طلباتي' : 'My Orders')
 @section('content')
 <div class="container py-5">
-    <h3 class="fw-bold mb-4">My Orders</h3>
+    <h3 class="fw-bold mb-4">{{ $isAr ? 'طلباتي' : 'My Orders' }}</h3>
     <div class="card border-0 shadow-sm">
         <div class="table-responsive">
             <table class="table table-hover mb-0 align-middle">
-                <thead class="table-light"><tr><th>Order #</th><th>Date</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th><th>Actions</th></tr></thead>
+                <thead class="table-light"><tr>
+                    <th>{{ $isAr ? 'رقم الطلب' : 'Order #' }}</th>
+                    <th>{{ $isAr ? 'التاريخ' : 'Date' }}</th>
+                    <th>{{ $isAr ? 'المنتجات' : 'Items' }}</th>
+                    <th>{{ $isAr ? 'الإجمالي' : 'Total' }}</th>
+                    <th>{{ $isAr ? 'الدفع' : 'Payment' }}</th>
+                    <th>{{ $isAr ? 'الحالة' : 'Status' }}</th>
+                    <th>{{ $isAr ? 'الإجراءات' : 'Actions' }}</th>
+                </tr></thead>
                 <tbody>
                     @forelse($orders as $order)
                     <tr>
@@ -18,10 +27,10 @@
                         <td><span class="badge bg-{{ $order->status_badge['class'] }}">{{ $order->status_badge['label'] }}</span></td>
                         <td>
                             <div class="d-flex gap-1">
-                                <a href="{{ route('customer.orders.show',$order) }}" class="btn btn-sm btn-outline-primary">View</a>
+                                <a href="{{ route('customer.orders.show',$order) }}" class="btn btn-sm btn-outline-primary">{{ $isAr ? 'عرض' : 'View' }}</a>
                                 <a href="{{ route('customer.orders.invoice',$order) }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-download"></i></a>
                                 @if($order->canBeCancelled())
-                                <form action="{{ route('customer.orders.cancel',$order) }}" method="POST" onsubmit="return confirm('Cancel this order?')">
+                                <form action="{{ route('customer.orders.cancel',$order) }}" method="POST" onsubmit="return confirm('{{ $isAr ? 'هل تريد إلغاء هذا الطلب؟' : 'Cancel this order?' }}')">
                                     @csrf
                                     <button class="btn btn-sm btn-outline-danger"><i class="fas fa-times"></i></button>
                                 </form>
@@ -30,7 +39,7 @@
                         </td>
                     </tr>
                     @empty
-                    <tr><td colspan="7" class="text-center text-muted py-5"><i class="fas fa-box-open fa-3x d-block mb-3"></i>No orders found. <a href="{{ route('shop') }}">Start shopping!</a></td></tr>
+                    <tr><td colspan="7" class="text-center text-muted py-5"><i class="fas fa-box-open fa-3x d-block mb-3"></i>{{ $isAr ? 'لا توجد طلبات.' : 'No orders found.' }} <a href="{{ route('shop') }}">{{ $isAr ? 'ابدأ التسوق!' : 'Start shopping!' }}</a></td></tr>
                     @endforelse
                 </tbody>
             </table>

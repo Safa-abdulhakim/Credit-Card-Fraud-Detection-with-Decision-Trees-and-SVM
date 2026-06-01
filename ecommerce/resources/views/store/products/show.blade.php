@@ -1,11 +1,12 @@
 @extends('layouts.app')
+@php $isAr = app()->getLocale() === 'ar'; @endphp
 @section('title', $product->name)
 @section('content')
 <div class="container py-5">
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('shop') }}">Shop</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ $isAr ? 'الرئيسية' : 'Home' }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('shop') }}">{{ $isAr ? 'المتجر' : 'Shop' }}</a></li>
             <li class="breadcrumb-item"><a href="{{ route('category.show', $product->category->slug) }}">{{ $product->category?->name }}</a></li>
             <li class="breadcrumb-item active">{{ Str::limit($product->name,40) }}</li>
         </ol>
@@ -30,7 +31,7 @@
             <h2 class="fw-bold mb-2">{{ $product->name }}</h2>
             <div class="mb-3 text-warning">
                 @for($i=1;$i<=5;$i++)<i class="fa{{ $i<=round($product->rating_avg)?'s':'r' }} fa-star"></i>@endfor
-                <span class="text-muted ms-2 small">{{ $product->rating_avg }}/5 ({{ $product->rating_count }} reviews)</span>
+                <span class="text-muted ms-2 small">{{ $product->rating_avg }}/5 ({{ $product->rating_count }} {{ $isAr ? 'تقييم' : 'reviews' }})</span>
             </div>
             <div class="mb-3">
                 @if($product->discount_price)
@@ -44,9 +45,9 @@
             <p class="text-muted mb-3">{{ $product->short_description }}</p>
             <div class="mb-3">
                 @if($product->isInStock())
-                    <span class="badge bg-success fs-6"><i class="fas fa-check me-1"></i>In Stock ({{ $product->available_quantity }} available)</span>
+                    <span class="badge bg-success fs-6"><i class="fas fa-check me-1"></i>{{ $isAr ? 'متوفر' : 'In Stock' }} ({{ $product->available_quantity }} {{ $isAr ? 'متاح' : 'available' }})</span>
                 @else
-                    <span class="badge bg-danger fs-6"><i class="fas fa-times me-1"></i>Out of Stock</span>
+                    <span class="badge bg-danger fs-6"><i class="fas fa-times me-1"></i>{{ $isAr ? 'غير متوفر' : 'Out of Stock' }}</span>
                 @endif
             </div>
             <div class="d-flex gap-3 mb-4">
@@ -55,7 +56,7 @@
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                     <input type="number" name="quantity" value="1" min="1" max="{{ $product->available_quantity }}" class="form-control" style="width:80px;">
                     <button class="btn btn-primary btn-lg px-4" {{ !$product->isInStock()?'disabled':'' }}>
-                        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                        <i class="fas fa-cart-plus me-2"></i>{{ $isAr ? 'أضف للسلة' : 'Add to Cart' }}
                     </button>
                 </form>
                 @auth
@@ -66,42 +67,42 @@
                 @endauth
             </div>
             <div class="border rounded p-3 small text-muted">
-                <div><i class="fas fa-store me-2 text-primary"></i>Sold by: <strong>{{ $product->vendor->store_name }}</strong></div>
-                <div class="mt-1"><i class="fas fa-truck me-2 text-success"></i>Free shipping on orders over $100</div>
-                <div class="mt-1"><i class="fas fa-undo me-2 text-warning"></i>30-day returns</div>
+                <div><i class="fas fa-store me-2 text-primary"></i>{{ $isAr ? 'يُباع بواسطة:' : 'Sold by:' }} <strong>{{ $product->vendor->store_name }}</strong></div>
+                <div class="mt-1"><i class="fas fa-truck me-2 text-success"></i>{{ $isAr ? 'شحن مجاني للطلبات فوق $100' : 'Free shipping on orders over $100' }}</div>
+                <div class="mt-1"><i class="fas fa-undo me-2 text-warning"></i>{{ $isAr ? 'إرجاع خلال 30 يوماً' : '30-day returns' }}</div>
             </div>
         </div>
     </div>
     <div class="row mt-5">
         <div class="col-lg-8">
             <ul class="nav nav-tabs mb-4" id="productTabs">
-                <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#desc">Description</a></li>
-                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#reviews">Reviews ({{ $product->reviews->count() }})</a></li>
+                <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#desc">{{ $isAr ? 'الوصف' : 'Description' }}</a></li>
+                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#reviews">{{ $isAr ? 'التقييمات' : 'Reviews' }} ({{ $product->reviews->count() }})</a></li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="desc">
-                    <div class="prose">{{ $product->description ?? 'No description available.' }}</div>
+                    <div class="prose">{{ $product->description ?? ($isAr ? 'لا يوجد وصف.' : 'No description available.') }}</div>
                 </div>
                 <div class="tab-pane fade" id="reviews">
                     @auth
                     <div class="card border-0 bg-light p-3 mb-4">
-                        <h6 class="fw-bold mb-3">Write a Review</h6>
+                        <h6 class="fw-bold mb-3">{{ $isAr ? 'اكتب تقييماً' : 'Write a Review' }}</h6>
                         <form action="{{ route('reviews.store') }}" method="POST">
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                             <div class="mb-2">
-                                <label class="form-label small">Rating</label>
+                                <label class="form-label small">{{ $isAr ? 'التقييم' : 'Rating' }}</label>
                                 <select name="rating" class="form-select form-select-sm" style="width:auto;" required>
-                                    <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-                                    <option value="4">⭐⭐⭐⭐ Good</option>
-                                    <option value="3">⭐⭐⭐ Average</option>
-                                    <option value="2">⭐⭐ Poor</option>
-                                    <option value="1">⭐ Terrible</option>
+                                    <option value="5">⭐⭐⭐⭐⭐ {{ $isAr ? 'ممتاز' : 'Excellent' }}</option>
+                                    <option value="4">⭐⭐⭐⭐ {{ $isAr ? 'جيد جداً' : 'Good' }}</option>
+                                    <option value="3">⭐⭐⭐ {{ $isAr ? 'متوسط' : 'Average' }}</option>
+                                    <option value="2">⭐⭐ {{ $isAr ? 'ضعيف' : 'Poor' }}</option>
+                                    <option value="1">⭐ {{ $isAr ? 'سيء' : 'Terrible' }}</option>
                                 </select>
                             </div>
-                            <div class="mb-2"><input type="text" name="title" class="form-control form-control-sm" placeholder="Review title"></div>
-                            <div class="mb-2"><textarea name="body" class="form-control form-control-sm" rows="3" placeholder="Share your experience..."></textarea></div>
-                            <button type="submit" class="btn btn-primary btn-sm">Submit Review</button>
+                            <div class="mb-2"><input type="text" name="title" class="form-control form-control-sm" placeholder="{{ $isAr ? 'عنوان التقييم' : 'Review title' }}"></div>
+                            <div class="mb-2"><textarea name="body" class="form-control form-control-sm" rows="3" placeholder="{{ $isAr ? 'شاركنا تجربتك...' : 'Share your experience...' }}"></textarea></div>
+                            <button type="submit" class="btn btn-primary btn-sm">{{ $isAr ? 'إرسال التقييم' : 'Submit Review' }}</button>
                         </form>
                     </div>
                     @endauth
@@ -116,7 +117,7 @@
                         <p class="small text-muted mb-0">{{ $review->body }}</p>
                     </div>
                     @empty
-                    <p class="text-muted">No reviews yet. Be the first to review!</p>
+                    <p class="text-muted">{{ $isAr ? 'لا توجد تقييمات بعد. كن أول من يقيّم!' : 'No reviews yet. Be the first to review!' }}</p>
                     @endforelse
                 </div>
             </div>
@@ -124,7 +125,7 @@
     </div>
     @if($related->isNotEmpty())
     <div class="mt-5">
-        <h4 class="fw-bold mb-4">Related Products</h4>
+        <h4 class="fw-bold mb-4">{{ $isAr ? 'منتجات مشابهة' : 'Related Products' }}</h4>
         <div class="row g-4">
             @foreach($related as $p)
             <div class="col-sm-6 col-lg-3">@include('components.product-card',['product'=>$p])</div>

@@ -1,24 +1,30 @@
+@php $isAr = app()->getLocale() === 'ar'; @endphp
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ $isAr ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin') | ShopMart Admin</title>
+    @if($isAr)
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    @else
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    @endif
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root { --sidebar-width: 260px; --sidebar-bg: #1e2a3a; --sidebar-text: #8899aa; --sidebar-active: #0d6efd; }
-        body { background: #f0f2f5; }
-        .admin-sidebar { width: var(--sidebar-width); min-height: 100vh; background: var(--sidebar-bg); position: fixed; top: 0; left: 0; z-index: 1000; transition: all .3s; overflow-y: auto; }
+        body { background: #f0f2f5; font-family: {{ $isAr ? "'Cairo', 'Segoe UI', sans-serif" : "'Segoe UI', sans-serif" }}; }
+        .admin-sidebar { width: var(--sidebar-width); min-height: 100vh; background: var(--sidebar-bg); position: fixed; top: 0; {{ $isAr ? 'right' : 'left' }}: 0; z-index: 1000; transition: all .3s; overflow-y: auto; }
         .admin-sidebar .brand { background: #162032; padding: 20px; border-bottom: 1px solid #2d3f50; }
         .admin-sidebar .brand h4 { color: white; margin: 0; font-weight: 700; }
         .sidebar-nav { padding: 15px 0; }
         .sidebar-nav .nav-section { color: #4a6080; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 15px 20px 5px; }
         .sidebar-nav .nav-link { color: var(--sidebar-text); padding: 10px 20px; display: flex; align-items: center; gap: 10px; border-radius: 0; transition: all .2s; font-size: .9rem; }
-        .sidebar-nav .nav-link:hover, .sidebar-nav .nav-link.active { color: white; background: rgba(13,110,253,.15); border-left: 3px solid var(--sidebar-active); }
+        .sidebar-nav .nav-link:hover, .sidebar-nav .nav-link.active { color: white; background: rgba(13,110,253,.15); {{ $isAr ? 'border-right' : 'border-left' }}: 3px solid var(--sidebar-active); }
         .sidebar-nav .nav-link i { width: 20px; text-align: center; }
-        .admin-main { margin-left: var(--sidebar-width); min-height: 100vh; }
+        .admin-main { {{ $isAr ? 'margin-right' : 'margin-left' }}: var(--sidebar-width); min-height: 100vh; }
         .admin-topbar { background: white; border-bottom: 1px solid #e9ecef; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 999; }
         .admin-content { padding: 24px; }
         .stat-card { border-radius: 16px; border: none; overflow: hidden; }
@@ -78,6 +84,16 @@
             <h6 class="mb-0 fw-bold">@yield('page-title', 'Dashboard')</h6>
         </div>
         <div class="d-flex align-items-center gap-3">
+            <form action="{{ route('locale.switch') }}" method="POST" class="d-inline">
+                @csrf
+                @if($isAr)
+                    <input type="hidden" name="locale" value="en">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">English</button>
+                @else
+                    <input type="hidden" name="locale" value="ar">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">العربية</button>
+                @endif
+            </form>
             <a href="{{ route('admin.orders.index') }}" class="btn btn-sm btn-outline-primary position-relative">
                 <i class="fas fa-bell"></i>
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:9px;">

@@ -1,16 +1,17 @@
 @extends('layouts.app')
-@section('title', 'Home - Best Online Shop')
+@php $isAr = app()->getLocale() === 'ar'; @endphp
+@section('title', $isAr ? 'الرئيسية - أفضل متجر إلكتروني' : 'Home - Best Online Shop')
 
 @section('content')
 {{-- Hero Section --}}
 <section class="hero-section text-center">
     <div class="container">
-        <h1 class="display-4 fw-bold mb-3">Discover Amazing Products</h1>
-        <p class="lead mb-4">Shop from thousands of products from top vendors worldwide.</p>
+        <h1 class="display-4 fw-bold mb-3">{{ $isAr ? 'اكتشف منتجات رائعة' : 'Discover Amazing Products' }}</h1>
+        <p class="lead mb-4">{{ $isAr ? 'تسوق من آلاف المنتجات من أفضل البائعين حول العالم.' : 'Shop from thousands of products from top vendors worldwide.' }}</p>
         <div class="d-flex gap-3 justify-content-center">
-            <a href="{{ route('shop') }}" class="btn btn-light btn-lg px-5">Shop Now <i class="fas fa-arrow-right ms-2"></i></a>
+            <a href="{{ route('shop') }}" class="btn btn-light btn-lg px-5">{{ $isAr ? 'تسوق الآن' : 'Shop Now' }} <i class="fas fa-arrow-{{ $isAr ? 'left' : 'right' }} ms-2"></i></a>
             @guest
-                <a href="{{ route('register') }}" class="btn btn-outline-light btn-lg px-5">Join Free</a>
+                <a href="{{ route('register') }}" class="btn btn-outline-light btn-lg px-5">{{ $isAr ? 'انضم مجاناً' : 'Join Free' }}</a>
             @endguest
         </div>
     </div>
@@ -19,7 +20,7 @@
 {{-- Categories --}}
 <section class="py-5 bg-light">
     <div class="container">
-        <h2 class="fw-bold text-center mb-4">Shop by Category</h2>
+        <h2 class="fw-bold text-center mb-4">{{ $isAr ? 'تسوق حسب الفئة' : 'Shop by Category' }}</h2>
         <div class="row g-3">
             @foreach($categories as $category)
             <div class="col-6 col-md-4 col-lg-2">
@@ -36,7 +37,7 @@
                             @endswitch
                         </div>
                         <h6 class="fw-semibold text-dark">{{ $category->name }}</h6>
-                        <small class="text-muted">{{ $category->products_count }} items</small>
+                        <small class="text-muted">{{ $category->products_count }} {{ $isAr ? 'منتج' : 'items' }}</small>
                     </div>
                 </a>
             </div>
@@ -49,8 +50,8 @@
 <section class="py-5">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold mb-0">Featured Products</h2>
-            <a href="{{ route('shop') }}" class="btn btn-outline-primary">View All</a>
+            <h2 class="fw-bold mb-0">{{ $isAr ? 'منتجات مميزة' : 'Featured Products' }}</h2>
+            <a href="{{ route('shop') }}" class="btn btn-outline-primary">{{ $isAr ? 'عرض الكل' : 'View All' }}</a>
         </div>
         <div class="row g-4">
             @foreach($featuredProducts as $product)
@@ -66,8 +67,8 @@
 <section class="py-5 bg-light">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold mb-0"><i class="fas fa-fire text-warning me-2"></i>Best Sellers</h2>
-            <a href="{{ route('shop') }}?sort=popular" class="btn btn-outline-warning">View All</a>
+            <h2 class="fw-bold mb-0"><i class="fas fa-fire text-warning me-2"></i>{{ $isAr ? 'الأكثر مبيعاً' : 'Best Sellers' }}</h2>
+            <a href="{{ route('shop') }}?sort=popular" class="btn btn-outline-warning">{{ $isAr ? 'عرض الكل' : 'View All' }}</a>
         </div>
         <div class="row g-4">
             @foreach($bestSelling as $product)
@@ -83,8 +84,8 @@
 <section class="py-5">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold mb-0">New Arrivals</h2>
-            <a href="{{ route('shop') }}?sort=newest" class="btn btn-outline-primary">View All</a>
+            <h2 class="fw-bold mb-0">{{ $isAr ? 'وصل حديثاً' : 'New Arrivals' }}</h2>
+            <a href="{{ route('shop') }}?sort=newest" class="btn btn-outline-primary">{{ $isAr ? 'عرض الكل' : 'View All' }}</a>
         </div>
         <div class="row g-4">
             @foreach($latestProducts as $product)
@@ -100,9 +101,9 @@
 @guest
 <section class="py-5 bg-primary text-white">
     <div class="container text-center">
-        <h2 class="fw-bold mb-3">Sell on ShopMart</h2>
-        <p class="lead mb-4">Join thousands of vendors and start earning today!</p>
-        <a href="{{ route('vendor.register') }}" class="btn btn-light btn-lg px-5">Start Selling</a>
+        <h2 class="fw-bold mb-3">{{ $isAr ? 'بِع على ShopMart' : 'Sell on ShopMart' }}</h2>
+        <p class="lead mb-4">{{ $isAr ? 'انضم إلى آلاف البائعين وابدأ الكسب اليوم!' : 'Join thousands of vendors and start earning today!' }}</p>
+        <a href="{{ route('vendor.register') }}" class="btn btn-light btn-lg px-5">{{ $isAr ? 'ابدأ البيع' : 'Start Selling' }}</a>
     </div>
 </section>
 @endguest

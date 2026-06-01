@@ -1,10 +1,11 @@
 @extends('layouts.app')
-@section('title','My Wishlist')
+@php $isAr = app()->getLocale() === 'ar'; @endphp
+@section('title', $isAr ? 'المفضلة' : 'My Wishlist')
 @section('content')
 <div class="container py-5">
-    <h3 class="fw-bold mb-4"><i class="fas fa-heart text-danger me-2"></i>My Wishlist</h3>
+    <h3 class="fw-bold mb-4"><i class="fas fa-heart text-danger me-2"></i>{{ $isAr ? 'المفضلة' : 'My Wishlist' }}</h3>
     @if($wishlists->isEmpty())
-        <div class="text-center py-5"><i class="fas fa-heart fa-4x text-muted mb-4 d-block"></i><h5>Your wishlist is empty</h5><a href="{{ route('shop') }}" class="btn btn-primary mt-3">Browse Products</a></div>
+        <div class="text-center py-5"><i class="fas fa-heart fa-4x text-muted mb-4 d-block"></i><h5>{{ $isAr ? 'قائمة المفضلة فارغة' : 'Your wishlist is empty' }}</h5><a href="{{ route('shop') }}" class="btn btn-primary mt-3">{{ $isAr ? 'تصفح المنتجات' : 'Browse Products' }}</a></div>
     @else
         <div class="row g-4">
             @foreach($wishlists as $wishlist)
@@ -24,7 +25,7 @@
                             <form action="{{ route('cart.add') }}" method="POST" class="flex-grow-1">
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $wishlist->product->id }}">
-                                <button class="btn btn-primary btn-sm w-100"><i class="fas fa-cart-plus me-1"></i>Add to Cart</button>
+                                <button class="btn btn-primary btn-sm w-100"><i class="fas fa-cart-plus me-1"></i>{{ $isAr ? 'أضف للسلة' : 'Add to Cart' }}</button>
                             </form>
                             <form action="{{ route('customer.wishlist.toggle',$wishlist->product) }}" method="POST">
                                 @csrf

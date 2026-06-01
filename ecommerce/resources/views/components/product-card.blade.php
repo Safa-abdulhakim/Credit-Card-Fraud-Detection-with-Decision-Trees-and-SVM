@@ -1,3 +1,4 @@
+@php $isAr = app()->getLocale() === 'ar'; @endphp
 <div class="card product-card border-0 shadow-sm h-100">
     <div class="position-relative">
         <a href="{{ route('product.show', $product->slug) }}">
@@ -8,10 +9,10 @@
             @endif
         </a>
         @if($product->discount_price)
-            <span class="position-absolute top-0 start-0 m-2 badge bg-danger">SALE</span>
+            <span class="position-absolute top-0 start-0 m-2 badge bg-danger">{{ $isAr ? 'خصم' : 'SALE' }}</span>
         @endif
         @if($product->is_featured)
-            <span class="position-absolute top-0 end-0 m-2 badge bg-warning text-dark">Featured</span>
+            <span class="position-absolute top-0 end-0 m-2 badge bg-warning text-dark">{{ $isAr ? 'مميز' : 'Featured' }}</span>
         @endif
     </div>
     <div class="card-body d-flex flex-column p-3">
@@ -36,7 +37,7 @@
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <button class="btn btn-primary btn-sm rounded-pill px-3">
-                    <i class="fas fa-cart-plus me-1"></i>Add
+                    <i class="fas fa-cart-plus me-1"></i>{{ $isAr ? 'أضف' : 'Add' }}
                 </button>
             </form>
         </div>

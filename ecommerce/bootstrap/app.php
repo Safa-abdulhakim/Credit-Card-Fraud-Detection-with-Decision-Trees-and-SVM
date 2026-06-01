@@ -22,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web(append: [
             ActiveUserMiddleware::class,
+            \App\Http\Middleware\LocaleMiddleware::class,
         ]);
 
         $middleware->alias([

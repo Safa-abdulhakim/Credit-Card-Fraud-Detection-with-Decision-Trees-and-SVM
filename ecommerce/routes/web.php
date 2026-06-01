@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\Route;
 | Public Store Routes
 |--------------------------------------------------------------------------
 */
+// Language switcher
+Route::post('/locale', function () {
+    $locale = request('locale');
+    if (in_array($locale, ['en', 'ar'])) {
+        session(['locale' => $locale]);
+    }
+    return back();
+})->name('locale.switch');
+
 Route::get('/', [Store\HomeController::class, 'index'])->name('home');
 Route::get('/shop', [Store\ProductController::class, 'index'])->name('shop');
 Route::get('/shop/{slug}', [Store\ProductController::class, 'show'])->name('product.show');
